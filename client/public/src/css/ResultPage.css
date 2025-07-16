@@ -1,0 +1,131 @@
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  background-color: #eef1f7;
+  min-height: 100vh;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.result-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.result-card {
+  background-color: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.location-info {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.location-icon {
+  color: #888;
+}
+
+.weather-info {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  font-size: 12px;
+  text-align: right;
+}
+
+.weather-icon {
+  font-size: 20px;
+}
+
+.weather-text {
+  font-weight: 600;
+}
+
+.weather-temp {
+  font-size: 16px;
+}
+
+.weather-sub {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #888;
+}
+
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.carousel-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.carousel-image img {
+  width: 250px;
+  height: 200px;
+  border-radius: 16px;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.carousel-indicator {
+  text-align: center;
+  font-size: 14px;
+  margin: 12px 0;
+}
+
+.style-tip {
+  margin-top: 16px;
+  background: #f7f7f7;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #333;
+}
+
+.tip-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.back-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(to right, #5a45ff, #c04aff);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
