@@ -1,0 +1,137 @@
+# 추천 API 스키마 (Swagger 2.0 형식)
+recommend_schema = {
+    'tags': ['Recommendation'],
+    'summary': 'AI 기반 의상 추천',
+    'description': 'JSON 데이터와 이미지를 함께 받아서 AI가 의상을 추천합니다',
+    'consumes': ['multipart/form-data'],
+    'produces': ['application/json'],
+    'parameters': [
+        {
+            'name': 'data',
+            'in': 'formData',
+            'type': 'string',
+            'required': True,
+            'description': 'JSON 형태의 요청 데이터 (예: {"location": "서울", "style_select": ["스트릿", "캐주얼"], "user_request": "귀엽게 입고 싶어요"})'
+        },
+        {
+            'name': 'image',
+            'in': 'formData',
+            'type': 'file',
+            'required': False,
+            'description': '의류 이미지 파일 (선택사항)'
+        }
+    ],
+    'responses': {
+        200: {
+            'description': '추천 성공',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'success': {'type': 'boolean'},
+                    'weather': {
+                        'type': 'object',
+                        'properties': {
+                            'temperature': {'type': 'number'},
+                            'condition': {'type': 'string'},
+                            'humidity': {'type': 'integer'},
+                            'wind_speed': {'type': 'number'}
+                        }
+                    },
+                    'recommendation_text': {'type': 'string'},
+                    'suggested_items': {
+                        'type': 'array',
+                        'items': {'type': 'string'}
+                    },
+                    'recommended_images': {
+                        'type': 'array',
+                        'items': {
+                            'type': 'object',
+                            'properties': {
+                                'id': {'type': 'integer'},
+                                'category': {'type': 'string'},
+                                'item_name': {'type': 'string'},
+                                'image_url': {'type': 'string'}
+                            }
+                        }
+                    },
+                    'image_analysis': {
+                        'type': 'object',
+                        'description': '업로드된 이미지 분석 결과'
+                    }
+                }
+            }
+        },
+        400: {
+            'description': '잘못된 요청',
+            'schema': {
+                '$ref': '#/definitions/Error'
+            }
+        },
+        500: {
+            'description': '서버 오류',
+            'schema': {
+                '$ref': '#/definitions/Error'
+            }
+        }
+    }
+}
+
+# 헬스 체크 API 스키마
+health_check_schema = {
+    'tags': ['Utility'],
+    'summary': '서버 상태 확인',
+    'description': '서버가 정상적으로 동작하는지 확인합니다',
+    'produces': ['application/json'],
+    'responses': {
+        200: {
+            'description': '서버 정상',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'status': {'type': 'string'},
+                    'timestamp': {'type': 'string'}
+                }
+            }
+        }
+    }
+}
+
+# Swagger 파일 생성 API 스키마
+make_swagger_schema = {
+    'tags': ['Utility'],
+    'summary': 'Swagger YAML 파일 생성',
+    'description': '현재 API 스펙을 바탕으로 swagger.yaml 파일을 서버 폴더에 생성합니다(github/online 에디터 공유용)',
+    'produces': ['application/json'],
+    'responses': {
+        200: {
+            'description': 'Swagger 파일 생성 성공',
+            'schema': {
+                'type': 'object',
+                'properties': {
+                    'message': {
+                        'type': 'string',
+                        'description': '성공 메시지'
+                    },
+                    'file_path': {
+                        'type': 'string',
+                        'description': '생성된 파일의 절대 경로'
+                    },
+                    'timestamp': {
+                        'type': 'string',
+                        'description': '파일 생성 시간'
+                    },
+                    'file_size': {
+                        'type': 'string',
+                        'description': '생성된 파일 크기'
+                    }
+                }
+            }
+        },
+        500: {
+            'description': 'Swagger 파일 생성 실패',
+            'schema': {
+                '$ref': '#/definitions/Error'
+            }
+        }
+    }
+}
