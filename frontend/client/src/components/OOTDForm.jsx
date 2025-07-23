@@ -3,11 +3,11 @@ import { useState } from "react";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import KakaoMapModal from "./KakaoMapModal";
+import axios from "axios";
 
 export default function OOTDForm() {
   const navigate = useNavigate();
   const [location, setLocation] = useState(""); // 선택한 주소
-  const [selectedCity, setSelectedCity] = useState(""); // 버튼 클릭 도시
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [styles, setStyles] = useState([]);
   const [request, setRequest] = useState("");
@@ -22,12 +22,38 @@ export default function OOTDForm() {
     );
   };
 
-  const handleSubmit = () => {
-    const finalLocation = location || selectedCity;
-    if (finalLocation && styles.length > 0 && request.trim() !== "") {
-      navigate("/result", { state: { location: finalLocation, styles, request } });
-    } else {
+  const handleSubmit = async () => {
+    if (!location || styles.length === 0 || request.trim() === "") {
       alert("모든 항목을 입력해주세요.");
+      return;
+    }
+
+    // ✅ 백엔드로 전송할 데이터 구성
+    const formData = new FormData();
+    const requestData = {
+      location: location,
+      style_select: styles,
+      user_request: request,
+    };
+
+    formData.append("data", JSON.stringify(requestData));
+    // 이미지 추가 가능 (선택): formData.append("image", imageFile);
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/recommend", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("추천 결과:", response.data);
+
+      // ✅ API 응답 데이터를 ResultPage로 전달
+      navigate("/result", { state: response.data });
+
+    } catch (error) {
+      console.error("API 요청 오류:", error);
+      alert("추천 요청 중 오류가 발생했습니다.");
     }
   };
 
@@ -43,7 +69,7 @@ export default function OOTDForm() {
           <div className="location-box" onClick={() => setIsModalOpen(true)}>
             <FaMapMarkerAlt className="icon" />
             <span className="location-label">
-              {location || selectedCity || "위치를 선택하세요"}
+              {location || "위치를 선택하세요"}
             </span>
           </div>
         </div>
