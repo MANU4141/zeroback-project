@@ -23,12 +23,20 @@ export default function OOTDForm() {
   };
 
   const handleSubmit = async () => {
-    if (!location || styles.length === 0 || request.trim() === "") {
-      alert("모든 항목을 입력해주세요.");
-      return;
-    }
+  if (!location || styles.length === 0) {
+    alert("위치와 스타일을 입력해주세요.");
+    return;
+  }
 
-    // ✅ 백엔드로 전송할 데이터 구성
+  const formData = new FormData();
+  const requestData = {
+    location: location,
+    style_select: styles,
+    user_request: request || ""  
+  };
+
+    /*
+    // 백엔드로 전송할 데이터 구성
     const formData = new FormData();
     const requestData = {
       location: location,
@@ -48,14 +56,16 @@ export default function OOTDForm() {
 
       console.log("추천 결과:", response.data);
 
-      // ✅ API 응답 데이터를 ResultPage로 전달
+      // API 응답 데이터를 ResultPage로 전달
       navigate("/result", { state: response.data });
 
     } catch (error) {
       console.error("API 요청 오류:", error);
       alert("추천 요청 중 오류가 발생했습니다.");
     }
+    */
   };
+  
 
   return (
     <div className={`ootd-container ${isModalOpen ? "blurred" : ""}`}>

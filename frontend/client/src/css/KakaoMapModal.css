@@ -28,3 +28,38 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
+.kakao-map {
+  width: 100%;
+  height: 300px;
+  background: #f1f1f1;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.city-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.city-btn {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.city-btn:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.city-btn:active {
+  background: #ddd;
+}
