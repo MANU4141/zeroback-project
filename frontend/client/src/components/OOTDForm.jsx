@@ -8,6 +8,7 @@ import axios from "axios";
 export default function OOTDForm() {
   const navigate = useNavigate();
   const [location, setLocation] = useState(""); // 선택한 주소
+  const [coords, setCoords] = useState({ lat: null, lng: null }); // ✅ 위도, 경도
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [styles, setStyles] = useState([]);
   const [request, setRequest] = useState("");
@@ -23,49 +24,35 @@ export default function OOTDForm() {
   };
 
   const handleSubmit = async () => {
-  if (!location || styles.length === 0) {
-    alert("위치와 스타일을 입력해주세요.");
-    return;
-  }
+    if (!location || styles.length === 0) {
+      alert("위치와 스타일을 선택해주세요.");
+      return;
+    }
 
-  const formData = new FormData();
-  const requestData = {
-    location: location,
-    style_select: styles,
-    user_request: request || ""  
-  };
-
-    /*
-    // 백엔드로 전송할 데이터 구성
-    const formData = new FormData();
     const requestData = {
       location: location,
+      latitude: coords.lat,
+      longitude: coords.lng,
       style_select: styles,
-      user_request: request,
+      user_request: request || "" // 요청사항 없으면 빈 값
     };
 
+    const formData = new FormData();
     formData.append("data", JSON.stringify(requestData));
-    // 이미지 추가 가능 (선택): formData.append("image", imageFile);
+    // formData.append("image", imageFile); // 이미지 선택 시 추가 가능
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/recommend", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("추천 결과:", response.data);
-
-      // API 응답 데이터를 ResultPage로 전달
-      navigate("/result", { state: response.data });
-
+      console.log("✅ 백엔드 응답:", response.data);
+      navigate("/result", { state: response.data }); // 결과 페이지로 이동
     } catch (error) {
-      console.error("API 요청 오류:", error);
+      console.error("❌ API 요청 오류:", error);
       alert("추천 요청 중 오류가 발생했습니다.");
     }
-    */
   };
-  
 
   return (
     <div className={`ootd-container ${isModalOpen ? "blurred" : ""}`}>
@@ -73,7 +60,7 @@ export default function OOTDForm() {
       <p className="subtitle">AI가 추천하는 오늘의 완벽한 코디</p>
 
       <div className="form-card">
-        {/* 위치 선택 */}
+        {/* ✅ 위치 선택 */}
         <div className="form-section">
           <label className="form-label">위치 선택</label>
           <div className="location-box" onClick={() => setIsModalOpen(true)}>
@@ -84,7 +71,7 @@ export default function OOTDForm() {
           </div>
         </div>
 
-        {/* 스타일 선택 */}
+        {/* ✅ 스타일 선택 */}
         <div className="form-section">
           <label className="form-label">스타일 (중복 선택 가능)</label>
           <div className="search-bar">
@@ -104,7 +91,7 @@ export default function OOTDForm() {
           </div>
         </div>
 
-        {/* 요청사항 */}
+        {/* ✅ 추가 요청사항 */}
         <div className="form-section">
           <label className="form-label">추가 요청사항</label>
           <textarea
@@ -114,28 +101,26 @@ export default function OOTDForm() {
           />
         </div>
 
-        {/* 제출 버튼 */}
+        {/* ✅ 제출 버튼 */}
         <button className="submit-btn" onClick={handleSubmit}>
           추천받기
         </button>
       </div>
 
-      {/* 모달 */}
+      {/* ✅ 모달 */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
             <h3 className="modal-title">위치 선택</h3>
-            <input
-              type="text"
-              placeholder="원하는 위치 검색"
-              className="modal-search"
-            />
             <div className="modal-map">
-              <KakaoMapModal onSelect={(addr) => setLocation(addr)} />
+              <KakaoMapModal
+                onSelect={(data) => {
+                  setLocation(data.address);
+                  setCoords({ lat: data.lat, lng: data.lng }); // ✅ 좌표 저장
+                }}
+                onClose={() => setIsModalOpen(false)}
+              />
             </div>
-            <button className="modal-confirm" onClick={() => setIsModalOpen(false)}>
-              확인
-            </button>
           </div>
         </div>
       )}
