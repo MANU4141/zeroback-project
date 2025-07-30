@@ -1,23 +1,28 @@
 from flask import Flask, render_template, request, jsonify
 import requests
-import os # os 모듈 임포트
-from dotenv import load_dotenv # python-dotenv에서 load_dotenv 임포트
+import os
+from dotenv import load_dotenv
+from datetime import datetime, timedelta # 날짜/시간 계산을 위해 임포트
 
-# .env 파일에서 환경 변수를 로드
 load_dotenv()
 
 app = Flask(__name__)
 
-# OpenWeatherMap API 설정
-# os.getenv()를 사용하여 환경 변수에서 API 키를 가져옵니다.
-API_KEY = os.getenv('OPENWEATHER_API_KEY')
-BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
+#API키는 .env파일에 저장되어있습니다. 여기에서는 볼수없습니다
 
-# API_KEY가 제대로 로드되었는지 확인 (디버깅 목적)
+# 기상청 단기예보 API 설정
+# OpenWeatherMap API 키 대신 데이터.고.kr 서비스 키를 사용합니다.
+# .env 파일에 'KMA_SERVICE_KEY'로 저장하거나 직접 입력하세요.
+API_KEY = os.getenv('KMA_SERVICE_KEY') # .env 파일에서 KMA_SERVICE_KEY를 가져옵니다.
 if not API_KEY:
-    print("WARNING: OPENWEATHER_API_KEY가 .env 파일 또는 환경 변수에 설정되지 않았습니다.")
+    # .env에 없으면 환경 변수에서 가져오거나, 직접 여기에 입력하세요.
+    # API_KEY = 'YOUR_ACTUAL_KMA_SERVICE_KEY' # 여기에 데이터.고.kr 서비스 키를 넣으세요!
+    print("WARNING: KMA_SERVICE_KEY가 .env 파일 또는 환경 변수에 설정되지 않았습니다.")
     print("API 요청이 실패할 수 있습니다. .env 파일을 확인해주세요.")
 
+
+# 기상청 단기예보 API 기본 URL
+BASE_URL = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst'
 
 @app.route('/')
 def index():
@@ -25,53 +30,138 @@ def index():
 
 @app.route('/get_weather', methods=['POST'])
 def get_weather():
-    city = request.form['city']
+    # 기상청 API는 도시 이름 대신 격자 좌표(nx, ny)와 시간 정보를 사용합니다.
+    # 여기서는 서울의 격자 좌표를 예시로 하드코딩합니다.
+    # 실제 앱에서는 도시 이름을 nx, ny로 변환하는 로직이 필요합니다.
+    nx = 60 # 서울 (종로구)
+    ny = 127 # 서울 (종로구)
+
+    # API 호출을 위한 base_date (오늘 날짜)와 base_time (현재 시각에 가장 가까운 발표 시각) 계산
+    now = datetime.now()
+    # 단기예보 발표 시각 (2시, 5시, 8시 ... 23시)
+    # 현재 시간에서 가장 가까운 과거의 발표 시각을 찾아야 함
+    base_time = ""
+    if now.hour >= 23:
+        base_time = "2300"
+    elif now.hour >= 20:
+        base_time = "2000"
+    elif now.hour >= 17:
+        base_time = "1700"
+    elif now.hour >= 14:
+        base_time = "1400"
+    elif now.hour >= 11:
+        base_time = "1100"
+    elif now.hour >= 8:
+        base_time = "0800"
+    elif now.hour >= 5:
+        base_time = "0500"
+    elif now.hour >= 2:
+        base_time = "0200"
+    else: # 자정부터 2시 이전까지는 전날 23시 예보 사용
+        now -= timedelta(days=1)
+        base_time = "2300"
+    
+    base_date = now.strftime("%Y%m%d")
+
     params = {
-        'q': city,
-        'appid': API_KEY, # API_KEY 사용
-        'units': 'metric', # 섭씨 온도를 원하면 'metric', 화씨는 'imperial'
-        'lang': 'kr' # 한국어 날씨 정보를 원하면 'kr'
+        'serviceKey': API_KEY,
+        'pageNo': '1',
+        'numOfRows': '100', # 예보 항목이 많으므로 충분히 설정
+        'dataType': 'JSON', # JSON 형식으로 요청
+        'base_date': base_date,
+        'base_time': base_time,
+        'nx': nx,
+        'ny': ny
     }
 
     try:
-        # API_KEY가 없으면 여기서 오류 발생 가능성을 안내
-        if not API_KEY:
-            return jsonify({'success': False, 'message': 'API 키가 설정되지 않았습니다. 개발자에게 문의하세요.'})
+        if not API_KEY or API_KEY == 'YOUR_ACTUAL_KMA_SERVICE_KEY':
+            return jsonify({'success': False, 'message': '기상청 API 서비스 키가 올바르게 설정되지 않았습니다.'})
 
         response = requests.get(BASE_URL, params=params)
-        response.raise_for_status() # HTTP 오류가 발생하면 예외 발생
+        response.raise_for_status()
         weather_data = response.json()
 
-        if weather_data.get('cod') == 200:
-            # 필요한 날씨 정보 추출
-            city_name = weather_data['name']
-            country = weather_data['sys']['country']
-            temperature = weather_data['main']['temp']
-            feels_like = weather_data['main']['feels_like']
-            description = weather_data['weather'][0]['description']
-            humidity = weather_data['main']['humidity']
-            wind_speed = weather_data['wind']['speed']
-            icon = weather_data['weather'][0]['icon'] # 날씨 아이콘 코드
+        # 기상청 API 응답 파싱
+        items = weather_data.get('response', {}).get('body', {}).get('items', {}).get('item', [])
+        
+        # 필요한 정보 추출 (여기서는 현재 기온과 하늘 상태만 예시로 가져옵니다)
+        temperature = "정보 없음"
+        sky_status = "정보 없음"
+        humidity = "정보 없음"
+        wind_speed = "정보 없음"
+        
+        # 기상청 API는 여러 예보 항목을 반환하므로, 원하는 항목을 찾아야 합니다.
+        # fcstTime은 예보 시간 (예: 1200, 1300)
+        # category는 예보 항목 코드 (T1H: 기온, SKY: 하늘상태, PTY: 강수형태, REH: 습도, WSD: 풍속 등)
+        
+        # 현재 시간과 가장 가까운 예보 시간 찾기
+        current_hour_str = datetime.now().strftime("%H00")
+        
+        # 가장 가까운 시간의 예보 항목을 찾기 위한 임시 저장소
+        temp_found = False
+        sky_found = False
+        reh_found = False
+        wsd_found = False
 
-            weather_info = {
-                'city': city_name,
-                'country': country,
-                'temperature': temperature,
-                'feels_like': feels_like,
-                'description': description,
-                'humidity': humidity,
-                'wind_speed': wind_speed,
-                'icon_url': f"http://openweathermap.org/img/wn/{icon}@2x.png"
-            }
-            return jsonify({'success': True, 'data': weather_info})
-        else:
-            error_message = weather_data.get('message', '도시를 찾을 수 없거나 오류가 발생했습니다.')
-            return jsonify({'success': False, 'message': error_message})
+        # item 리스트를 역순으로 순회하여 가장 최근 예보를 찾거나,
+        # 특정 시간대의 예보를 찾을 수 있습니다.
+        # 여기서는 단순히 T1H (1시간 기온), SKY (하늘 상태), REH (습도), WSD (풍속)를 찾습니다.
+        # 복잡한 로직은 생략하고 예시로 제공합니다.
+        
+        # API 응답에서 원하는 최신 데이터를 찾기 위한 로직 (복잡성 고려 단순화)
+        # 실제로는 fcstDate와 fcstTime을 비교하여 가장 가까운 최신 예보를 찾아야 합니다.
+        
+        for item in items:
+            category = item.get('category')
+            fcst_value = item.get('fcstValue')
+            fcst_time = item.get('fcstTime') # 예보 시간 (예: "1200")
+            
+            # 현재 시간과 가장 가까운 예보 시간을 찾는 복잡한 로직은 생략하고,
+            # 특정 항목의 첫 번째 값을 가져오거나, 필요시 fcstTime을 비교하여 필터링할 수 있습니다.
+            
+            if category == 'T1H' and not temp_found: # 1시간 기온
+                temperature = f"{fcst_value}°C"
+                temp_found = True
+            elif category == 'SKY' and not sky_found: # 하늘상태 (1:맑음, 3:구름많음, 4:흐림)
+                if fcst_value == '1':
+                    sky_status = '맑음'
+                elif fcst_value == '3':
+                    sky_status = '구름많음'
+                elif fcst_value == '4':
+                    sky_status = '흐림'
+                else:
+                    sky_status = '알 수 없음'
+                sky_found = True
+            elif category == 'REH' and not reh_found: # 습도
+                humidity = f"{fcst_value}%"
+                reh_found = True
+            elif category == 'WSD' and not wsd_found: # 풍속
+                wind_speed = f"{fcst_value} m/s"
+                wsd_found = True
+            
+            # 모든 필요한 정보를 찾았으면 루프 종료 (선택 사항)
+            if temp_found and sky_found and reh_found and wsd_found:
+                break
+
+
+        # OpenWeatherMap과 유사한 형태로 정보 반환
+        weather_info = {
+            'city': f"서울 (격자: {nx}, {ny})", # 도시 이름 대신 격자 정보 표시
+            'country': '대한민국', # 고정
+            'temperature': temperature,
+            'feels_like': '정보 없음', # 기상청 단기예보에서 체감온도 직접 제공하지 않음
+            'description': sky_status, # 하늘 상태를 설명으로 사용
+            'humidity': humidity,
+            'wind_speed': wind_speed,
+            'icon_url': '' # 기상청 API는 아이콘 URL을 직접 제공하지 않아 비워둡니다.
+        }
+        return jsonify({'success': True, 'data': weather_info})
 
     except requests.exceptions.RequestException as e:
-        return jsonify({'success': False, 'message': f'네트워크 오류: {e}'})
+        return jsonify({'success': False, 'message': f'네트워크 오류 또는 API 통신 오류: {e}'})
     except Exception as e:
-        return jsonify({'success': False, 'message': f'알 수 없는 오류: {e}'})
+        return jsonify({'success': False, 'message': f'데이터 처리 오류: {e}'})
 
 if __name__ == '__main__':
-    app.run(debug=True) # debug=True는 개발 중 오류 메시지를 상세히 보여줍니다.
+    app.run(debug=True)
