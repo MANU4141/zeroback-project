@@ -1,3 +1,4 @@
+/* 모달 전체 오버레이 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -11,13 +12,20 @@
   z-index: 1000;
 }
 
+/* 모달 컨테이너 */
 .modal-content {
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
-  position: relative;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* 닫기 버튼 (옵션) */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -26,9 +34,12 @@
   color: white;
   border: none;
   padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 14px;
   cursor: pointer;
 }
 
+/* 지도 영역 */
 .kakao-map {
   width: 100%;
   height: 300px;
@@ -37,11 +48,56 @@
   margin-bottom: 15px;
 }
 
+/* 검색 입력 & 버튼 래퍼 */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* 검색 입력 */
+.modal-search {
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  padding: 0 45px 0 15px; /* 오른쪽 버튼 공간 확보 */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.modal-search:focus {
+  border-color: #6c63ff;
+}
+
+/* 검색 버튼 */
+.search-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: #6c63ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* 도시 버튼 영역 */
 .city-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+  margin-bottom: 15px;
 }
 
 .city-btn {
@@ -64,34 +120,20 @@
   background: #ddd;
 }
 
-.search-wrapper {
-  position: relative;
+/* 확인 버튼 */
+.modal-confirm {
   width: 100%;
-  display: inline-block;
-}
-
-.modal-search {
-  width: 100%;
-  height: 50px;
+  padding: 12px;
   font-size: 16px;
-  padding: 0 50px 0 15px; /* 오른쪽에 버튼 들어갈 자리 확보 */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  box-sizing: border-box;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #6c63ff, #7a6eff);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.search-btn {
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #6c63ff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.modal-confirm:hover {
+  background: linear-gradient(90deg, #5a54e0, #6c63ff);
 }

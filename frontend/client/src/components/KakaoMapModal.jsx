@@ -79,6 +79,32 @@ export default function KakaoMapModal({ onSelect, onClose }) {
     });
   }, []);
 
+  // ✅ 주요 도시 좌표
+  const cityCenters = {
+    서울: { lat: 37.5665, lng: 126.9780 },
+    부산: { lat: 35.1796, lng: 129.0756 },
+    대구: { lat: 35.8714, lng: 128.6014 },
+    인천: { lat: 37.4563, lng: 126.7052 },
+    광주: { lat: 35.1595, lng: 126.8526 },
+    대전: { lat: 36.3504, lng: 127.3845 },
+  };
+
+  // ✅ 도시 버튼 클릭 시 이동
+  const moveToCity = (lat, lng, cityName) => {
+    if (mapInstance && marker) {
+      const coords = new window.kakao.maps.LatLng(lat, lng);
+      mapInstance.setCenter(coords);
+      marker.setPosition(coords);
+
+      // ✅ 선택한 도시 이름을 주소로 설정
+      setSelectedLocation({
+        address: `${cityName} 시청`,
+        lat: lat,
+        lng: lng,
+      });
+    }
+  };
+
   // ✅ 확인 버튼 클릭 시 처리
   const handleConfirm = () => {
     if (!mapInstance || !marker) return;
@@ -123,6 +149,19 @@ export default function KakaoMapModal({ onSelect, onClose }) {
 
       {/* 지도 */}
       <div id="kakao-map" className="kakao-map"></div>
+
+      {/* ✅ 주요 도시 버튼 */}
+      <div className="city-grid">
+        {Object.keys(cityCenters).map((city) => (
+          <button
+            key={city}
+            className="city-btn"
+            onClick={() => moveToCity(cityCenters[city].lat, cityCenters[city].lng, city)}
+          >
+            {city}
+          </button>
+        ))}
+      </div>
 
       {/* 확인 버튼 */}
       <button className="modal-confirm" onClick={handleConfirm}>
