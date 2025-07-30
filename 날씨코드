@@ -1,0 +1,77 @@
+from flask import Flask, render_template, request, jsonify
+import requests
+import os # os 모듈 임포트
+from dotenv import load_dotenv # python-dotenv에서 load_dotenv 임포트
+
+# .env 파일에서 환경 변수를 로드
+load_dotenv()
+
+app = Flask(__name__)
+
+# OpenWeatherMap API 설정
+# os.getenv()를 사용하여 환경 변수에서 API 키를 가져옵니다.
+API_KEY = os.getenv('OPENWEATHER_API_KEY')
+BASE_URL = 'http://api.openweathermap.org/data/2.5/weather'
+
+# API_KEY가 제대로 로드되었는지 확인 (디버깅 목적)
+if not API_KEY:
+    print("WARNING: OPENWEATHER_API_KEY가 .env 파일 또는 환경 변수에 설정되지 않았습니다.")
+    print("API 요청이 실패할 수 있습니다. .env 파일을 확인해주세요.")
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/get_weather', methods=['POST'])
+def get_weather():
+    city = request.form['city']
+    params = {
+        'q': city,
+        'appid': API_KEY, # API_KEY 사용
+        'units': 'metric', # 섭씨 온도를 원하면 'metric', 화씨는 'imperial'
+        'lang': 'kr' # 한국어 날씨 정보를 원하면 'kr'
+    }
+
+    try:
+        # API_KEY가 없으면 여기서 오류 발생 가능성을 안내
+        if not API_KEY:
+            return jsonify({'success': False, 'message': 'API 키가 설정되지 않았습니다. 개발자에게 문의하세요.'})
+
+        response = requests.get(BASE_URL, params=params)
+        response.raise_for_status() # HTTP 오류가 발생하면 예외 발생
+        weather_data = response.json()
+
+        if weather_data.get('cod') == 200:
+            # 필요한 날씨 정보 추출
+            city_name = weather_data['name']
+            country = weather_data['sys']['country']
+            temperature = weather_data['main']['temp']
+            feels_like = weather_data['main']['feels_like']
+            description = weather_data['weather'][0]['description']
+            humidity = weather_data['main']['humidity']
+            wind_speed = weather_data['wind']['speed']
+            icon = weather_data['weather'][0]['icon'] # 날씨 아이콘 코드
+
+            weather_info = {
+                'city': city_name,
+                'country': country,
+                'temperature': temperature,
+                'feels_like': feels_like,
+                'description': description,
+                'humidity': humidity,
+                'wind_speed': wind_speed,
+                'icon_url': f"http://openweathermap.org/img/wn/{icon}@2x.png"
+            }
+            return jsonify({'success': True, 'data': weather_info})
+        else:
+            error_message = weather_data.get('message', '도시를 찾을 수 없거나 오류가 발생했습니다.')
+            return jsonify({'success': False, 'message': error_message})
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({'success': False, 'message': f'네트워크 오류: {e}'})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'알 수 없는 오류: {e}'})
+
+if __name__ == '__main__':
+    app.run(debug=True) # debug=True는 개발 중 오류 메시지를 상세히 보여줍니다.
