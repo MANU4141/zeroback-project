@@ -1,0 +1,26 @@
+path: /content/drive/MyDrive/YOLOv11_large
+train: /content/drive/MyDrive/YOLOv11_large/images/train
+val: /content/drive/MyDrive/YOLOv11_large/images/val
+nc: 21
+names:
+  0: 탑
+  1: 블라우스
+  2: 티셔츠
+  3: 니트웨어
+  4: 셔츠
+  5: 브라탑
+  6: 후드티
+  7: 청바지
+  8: 팬츠
+  9: 스커트
+  10: 레깅스
+  11: 조거팬츠
+  12: 코트
+  13: 재킷
+  14: 점퍼
+  15: 패딩
+  16: 베스트
+  17: 가디건
+  18: 짚업
+  19: 드레스
+  20: 점프수트
