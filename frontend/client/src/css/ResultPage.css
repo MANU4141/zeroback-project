@@ -1,62 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Pretendard&display=swap');
+
 .result-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px;
-  text-align: center;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Pretendard', sans-serif;
+  background: #f1f4fb;
+  min-height: 100vh;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 24px;
   font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 4px;
 }
 
-.weather-box {
-  background: #f4f4f4;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: left;
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 24px;
 }
 
-.recommend-box h3 {
-  margin-bottom: 15px;
-}
-
-.recommend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.recommend-card {
+.info-box {
   background: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  margin-bottom: 24px;
 }
 
-.recommend-card img {
+.info-box h3 {
+  font-size: 16px;
+  margin: 10px 0 4px;
+}
+
+.user-images,
+.recommended-images {
   width: 100%;
-  height: 200px;
+  max-width: 420px;
+  margin-bottom: 24px;
+}
+
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-preview-grid img {
+  width: 100%;
+  height: 100px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 .back-btn {
-  margin-top: 20px;
-  padding: 12px 20px;
-  font-size: 16px;
-  background: linear-gradient(90deg, #6c63ff, #a066ff);
-  color: #fff;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 999px;
+  background: linear-gradient(to right, #5a45ff, #c04aff);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 .back-btn:hover {
-  background: linear-gradient(90deg, #5a52e0, #8a4fe0);
+  opacity: 0.9;
 }
