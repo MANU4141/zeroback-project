@@ -26,7 +26,7 @@ export default function ResultPage() {
 
       {/* ? 선택한 정보 표시 */}
       <div className="info-box">
-        <h3>? 선택한 위치</h3>
+        <h3>?선택한 위치</h3>
         <p>{location}</p>
         <p>위도: {latitude} | 경도: {longitude}</p>
 
