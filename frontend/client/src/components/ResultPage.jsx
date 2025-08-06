@@ -1,78 +1,83 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../css/ResultPage.css";
 
 export default function ResultPage() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-
-  if (!state) {
-    return (
-      <div className="result-container">
-        <h2>°á°ú µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.</h2>
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ´Ù½Ã ½ÃµµÇÏ±â
-        </button>
-      </div>
-    );
-  }
-
-  const { location, latitude, longitude, style_select, user_request, recommended_images } = state;
+  
+  // âœ… ë‚ ì”¨ ì•„ì´ì½˜
+  const getWeatherIcon = (desc) => {
+    const d = desc.toLowerCase();
+    if (d.includes("ë§‘ìŒ") || d.includes("clear")) return "â˜€ï¸";
+    if (d.includes("êµ¬ë¦„") || d.includes("cloud")) return "â˜ï¸";
+    if (d.includes("ë¹„") || d.includes("rain")) return "ğŸŒ§ï¸";
+    if (d.includes("ëˆˆ") || d.includes("snow")) return "â„ï¸";
+    return "ğŸŒ¤ï¸";
+  };
 
   return (
-    <div className="result-container">
-      <h1 className="title">ÃßÃµ °á°ú</h1>
-      <p className="subtitle">´ç½ÅÀ» À§ÇÑ AI ÄÚµğ ÃßÃµ</p>
+    <div className="result-wrapper">
+      {/* âœ… ìƒë‹¨ ì œëª© */}
+      <h1 className="title">OOTD-AI</h1>
+      <p className="subtitle">AIê°€ ì¶”ì²œí•˜ëŠ” ì˜¤ëŠ˜ì˜ ì™„ë²½í•œ ë£©</p>
 
-      {/* ? ¼±ÅÃÇÑ Á¤º¸ Ç¥½Ã */}
-      <div className="info-box">
-        <h3>?¼±ÅÃÇÑ À§Ä¡</h3>
-        <p>{location}</p>
-        <p>À§µµ: {latitude} | °æµµ: {longitude}</p>
+      <div className="result-layout">
+        {/* âœ… ì™¼ìª½ ì¶”ì²œ ì´ë¯¸ì§€ ì˜ì—­ */}
+        <div className="image-card">
+          <div className="image-header">
+            <h2 className="section-title">ì˜¤ëŠ˜ì˜ ì¶”ì²œ ë£©</h2>
+            <span className="location">{state.location}</span>
+          </div>
+          <div className="image-grid">
+            {state.recommended_images.map((img, idx) => (
+              <img key={idx} src={img} alt={`ì¶”ì²œ ${idx}`} />
+            ))}
+          </div>
+        </div>
 
-        <h3>? ¼±ÅÃÇÑ ½ºÅ¸ÀÏ</h3>
-        <p>{style_select.join(", ")}</p>
+        {/* âœ… ì˜¤ë¥¸ìª½ ì •ë³´ ì¹´ë“œ */}
+        <div className="sidebar">
+          {/* ë‚ ì”¨ ì •ë³´ */}
+          <div className="info-card weather-card">
+            <h3 className="card-title">ë‚ ì”¨ ì •ë³´</h3>
+            <div className="weather-content">
+              <div className="weather-icon">{getWeatherIcon(state.weather.description)}</div>
+              <div className="weather-details">
+                <p className="weather-desc">{state.weather.description}</p>
+                <p className="weather-temp">{state.weather.temp}Â°C</p>
+              </div>
+            </div>
+            <div className="weather-extra">
+              <p>ìŠµë„: {state.weather.humidity}%</p>
+              <p>ë°”ëŒ: {state.weather.wind} m/s</p>
+            </div>
+          </div>
 
-        {user_request && (
-          <>
-            <h3>? Ãß°¡ ¿äÃ»»çÇ×</h3>
-            <p>{user_request}</p>
-          </>
-        )}
-      </div>
+          {/* ì¶”ì²œ ì•„ì´í…œ */}
+          <div className="info-card">
+            <h3 className="card-title">ì¶”ì²œ ì•„ì´í…œ</h3>
+            <ul className="item-list">
+              {state.recommended_items.map((item, idx) => (
+                <li key={idx}>
+                  <span className="dot"></span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* ? »ç¿ëÀÚ°¡ ¾÷·ÎµåÇÑ ÀÌ¹ÌÁö ¹Ì¸®º¸±â */}
-      <div className="user-images">
-        <h3>? ¾÷·ÎµåÇÑ ÀÌ¹ÌÁö</h3>
-        <div className="image-preview-grid">
-          {state.user_images && state.user_images.length > 0 ? (
-            state.user_images.map((img, idx) => (
-              <img key={idx} src={img} alt="uploaded" />
-            ))
-          ) : (
-            <p>¾÷·ÎµåµÈ ÀÌ¹ÌÁö°¡ ¾ø½À´Ï´Ù.</p>
-          )}
+          {/* ìŠ¤íƒ€ì¼ë§ íŒ */}
+          <div className="info-card">
+            <h3 className="card-title">ğŸ’¡ ìŠ¤íƒ€ì¼ë§ íŒ</h3>
+            <p className="styling-tip">{state.styling_tip}</p>
+          </div>
+
+          {/* ë‹¤ì‹œ ìš”ì²­ ë²„íŠ¼ */}
+          <button className="retry-btn" onClick={() => navigate("/")}>
+            ìƒˆë¡œìš´ ì¶”ì²œ ë°›ê¸°
+          </button>
         </div>
       </div>
-
-      {/* ? AI ÃßÃµ ÀÌ¹ÌÁö Ç¥½Ã */}
-      <div className="recommended-images">
-        <h3>? AI ÃßÃµ ÄÚµğ</h3>
-        <div className="image-preview-grid">
-          {recommended_images && recommended_images.length > 0 ? (
-            recommended_images.map((img, idx) => (
-              <img key={idx} src={img} alt="recommend" />
-            ))
-          ) : (
-            <p>ÃßÃµ ÀÌ¹ÌÁö¸¦ ºÒ·¯¿À´Â Áß...</p>
-          )}
-        </div>
-      </div>
-
-      {/* ? ´Ù½Ã ¿äÃ» ¹öÆ° */}
-      <button className="back-btn" onClick={() => navigate("/")}>
-        ´Ù½Ã ¿äÃ»ÇÏ±â
-      </button>
     </div>
   );
 }
