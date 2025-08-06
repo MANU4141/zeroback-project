@@ -1,5 +1,5 @@
 MODEL_PATHS = {
-    "yolo": r"C:\Users\rkdgu\Desktop\github_zeroback\zeroback-project\Algorithm\AI\models\YOLOv11_small.pt"
+    "yolo": R"C:\Users\rkdgu\Desktop\VSC_clone_zeroback\zeroback-project\Algorithm\AI\models\YOLOv11_large_20000_75.pt"
 }  # 아직 small 사용 권장.
 
 CLASS_MAPPINGS = {

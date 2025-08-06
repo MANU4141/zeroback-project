@@ -119,7 +119,7 @@ def main():
     model = YOLOv11MultiTask(yolo_model, num_classes_dict).to(device)
 
     image_path = os.path.join(
-        os.path.dirname(__file__), "images", "test.jpg"  # 테스트 이미지 경로
+        os.path.dirname(__file__), "images", "test2.jpg"  # 테스트 이미지 경로
     )
     image = cv2.imread(image_path)
     if image is None:
