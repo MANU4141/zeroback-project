@@ -1,0 +1,44 @@
+services:
+  backend-dev:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: zeroback-backend-dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - zeroback-dev-network
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - FLASK_APP=app.py
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: zeroback-frontend-dev
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend/client/build:/usr/share/nginx/html:ro
+    depends_on:
+      backend-dev:
+        condition: service_healthy
+    networks:
+      - zeroback-dev-network
+    restart: unless-stopped
+
+networks:
+  zeroback-dev-network:
+    driver: bridge
