@@ -272,7 +272,7 @@ textarea {
 }
 
 .image-upload {
-  display: none; /* 기본 input 숨김 */
+  display: none; 
 }
 
 .file-upload-info {
@@ -281,7 +281,6 @@ textarea {
   color: #555;
 }
 
-/* ? 미리보기 */
 .preview-grid {
   display: flex;
   flex-wrap: wrap;
@@ -307,7 +306,6 @@ textarea {
   object-fit: cover;
 }
 
-/* ? 삭제 버튼 */
 .remove-btn {
   position: absolute;
   top: 5px;

@@ -1,4 +1,3 @@
-/* 모달 전체 오버레이 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -12,7 +11,6 @@
   z-index: 1000;
 }
 
-/* 모달 컨테이너 */
 .modal-content {
   background: #fff;
   padding: 20px;
@@ -25,7 +23,6 @@
   align-items: center;
 }
 
-/* 닫기 버튼 (옵션) */
 .close-btn {
   position: absolute;
   top: 10px;
@@ -39,7 +36,6 @@
   cursor: pointer;
 }
 
-/* 지도 영역 */
 .kakao-map {
   width: 100%;
   height: 300px;
@@ -48,19 +44,17 @@
   margin-bottom: 15px;
 }
 
-/* 검색 입력 & 버튼 래퍼 */
 .search-wrapper {
   position: relative;
   width: 100%;
   margin-bottom: 15px;
 }
 
-/* 검색 입력 */
 .modal-search {
   width: 100%;
   height: 50px;
   font-size: 16px;
-  padding: 0 45px 0 15px; /* 오른쪽 버튼 공간 확보 */
+  padding: 0 45px 0 15px; 
   border: 1px solid #ccc;
   border-radius: 8px;
   outline: none;
@@ -72,7 +66,6 @@
   border-color: #6c63ff;
 }
 
-/* 검색 버튼 */
 .search-btn {
   position: absolute;
   top: 50%;
@@ -91,7 +84,6 @@
   cursor: pointer;
 }
 
-/* 도시 버튼 영역 */
 .city-grid {
   display: flex;
   flex-wrap: wrap;
@@ -120,7 +112,6 @@
   background: #ddd;
 }
 
-/* 확인 버튼 */
 .modal-confirm {
   width: 100%;
   padding: 12px;
