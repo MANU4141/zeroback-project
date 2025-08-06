@@ -1,78 +1,165 @@
 @import url('https://fonts.googleapis.com/css2?family=Pretendard&display=swap');
 
-.result-container {
+body {
+  margin: 0;
+  background-color: #f1f4fb;
   font-family: 'Pretendard', sans-serif;
-  background: #f1f4fb;
-  min-height: 100vh;
-  padding: 32px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+}
+
+.result-wrapper {
+  padding: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .title {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
   margin-bottom: 4px;
 }
 
 .subtitle {
+  text-align: center;
+  font-size: 16px;
+  color: #777;
+  margin-bottom: 32px;
+}
+
+.result-layout {
+  display: flex;
+  gap: 24px;
+}
+
+/* ✅ 왼쪽 이미지 카드 */
+.image-card {
+  flex: 2;
+  background: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.image-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.location {
   font-size: 14px;
   color: #666;
-  margin-bottom: 24px;
 }
 
-.info-box {
-  background: #fff;
-  border-radius: 16px;
-  padding: 16px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  margin-bottom: 24px;
-}
-
-.info-box h3 {
-  font-size: 16px;
-  margin: 10px 0 4px;
-}
-
-.user-images,
-.recommended-images {
-  width: 100%;
-  max-width: 420px;
-  margin-bottom: 24px;
-}
-
-.image-preview-grid {
+.image-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
-  margin-top: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
-.image-preview-grid img {
+.image-grid img {
   width: 100%;
-  height: 100px;
+  height: 150px;
+  border-radius: 12px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ccc;
 }
 
-.back-btn {
+/* ✅ 오른쪽 사이드바 */
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ✅ 날씨 카드 */
+.weather-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.weather-icon {
+  font-size: 36px;
+}
+
+.weather-details p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.weather-temp {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.weather-extra {
+  font-size: 14px;
+  color: #666;
+}
+
+/* ✅ 추천 아이템 */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-list li {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.item-list .dot {
+  width: 8px;
+  height: 8px;
+  background: #5a45ff;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* ✅ 스타일링 팁 */
+.styling-tip {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* ✅ 버튼 */
+.retry-btn {
   width: 100%;
-  max-width: 420px;
   padding: 14px;
   border: none;
   border-radius: 999px;
   background: linear-gradient(to right, #5a45ff, #c04aff);
   color: white;
-  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 16px;
+  margin-top: 8px;
 }
 
-.back-btn:hover {
+.retry-btn:hover {
   opacity: 0.9;
 }
