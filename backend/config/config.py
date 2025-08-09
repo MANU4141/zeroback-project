@@ -1,5 +1,19 @@
+import os
+
+# Docker 환경 감지
+def get_model_path():
+    # Docker 컨테이너 내부에서는 /app이 작업 디렉토리
+    if os.path.exists("/app/models/YOLOv11_small.pt"):
+        return "models/YOLOv11_small.pt"
+    # 로컬 개발 환경
+    elif os.path.exists("backend/models/YOLOv11_small.pt"):
+        return "backend/models/YOLOv11_small.pt"
+    # 절대 경로로 시도
+    else:
+        return "models/YOLOv11_small.pt"
+
 MODEL_PATHS = {
-    "yolo": "backend/models/YOLOv11_small.pt"
+    "yolo": get_model_path()
 }  # 아직 small 사용 권장.
 
 CLASS_MAPPINGS = {

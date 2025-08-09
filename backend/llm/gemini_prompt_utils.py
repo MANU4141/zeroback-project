@@ -74,7 +74,7 @@ JSON 예시:
         else:
             return {"cleaned_request": user_prompt}
     except Exception as e:
-        print(f"Gemini 분석 오류: {e}")
+        print(f"Gemini 분석 오류: {e}", flush=True)
         return {"cleaned_request": user_prompt}
 
 
@@ -82,6 +82,6 @@ JSON 예시:
 if __name__ == "__main__":
     prompt = "오늘 데이트라서 귀엽고 깔끔하게 입고 싶어요. 파스텔톤 좋아요."
     result = analyze_user_prompt(prompt, style_preferences=["로맨틱", "캐주얼"])
-    print("Gemini 분석 결과:")
+    print("Gemini 분석 결과:", flush=True)
     for k, v in result.items():
-        print(f"{k}: {v}")
+        print(f"{k}: {v}", flush=True)

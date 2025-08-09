@@ -52,7 +52,7 @@ def final_recommendation(
         response = model.generate_content(llm_prompt)
         recommendation_text = response.text.strip()
     except Exception as e:
-        print(f"[Warning] LLM 추천 메시지 실패: {e}")
+        print(f"[Warning] LLM 추천 메시지 실패: {e}", flush=True)
         recommendation_text = f"오늘 {weather.get('temperature','')}°C {weather.get('condition','')} 날씨에는 {', '.join(categories[:3])}를 추천합니다."
     return {
         "recommendation_text": recommendation_text,

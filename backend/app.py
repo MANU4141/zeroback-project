@@ -26,7 +26,7 @@ try:
     from llm.gemini_prompt_utils import analyze_user_prompt
     from weather_api import KoreaWeatherAPI  # 새로 추가
 except ImportError as e:
-    print(f"AI 모듈 import 실패: {e}")
+    print(f"AI 모듈 import 실패: {e}", flush=True)
     YOLOv11MultiTask = None
 
 #Flask app init
@@ -49,10 +49,10 @@ def combine_multiple_image_results(results_list):
         valid_results = [r for r in results_list if r.get("attributes") is not None]
         
         if not valid_results:
-            print("[BE] combine_multiple_image_results : no valid results to combine")
+            print("[BE] combine_multiple_image_results : no valid results to combine", flush=True)
             return None
         
-        print(f"[BE] combine_multiple_image_results : processing {len(valid_results)} valid results")
+        print(f"[BE] combine_multiple_image_results : processing {len(valid_results)} valid results", flush=True)
         
         combined_attributes = {}
         total_confidence = 0
@@ -86,12 +86,12 @@ def combine_multiple_image_results(results_list):
                 most_common = counter.most_common(3)
                 final_attributes[attr_type] = [item[0] for item in most_common]
         
-        print(f"[BE] combine_multiple_image_results : final attributes: {final_attributes}")
+        print(f"[BE] combine_multiple_image_results : final attributes: {final_attributes}", flush=True)
         
         return final_attributes
         
     except Exception as e:
-        print(f"[BE] combine_multiple_image_results error: {e}")
+        print(f"[BE] combine_multiple_image_results error: {e}", flush=True)
         return None
 
 def initialize_ai_models():
@@ -99,7 +99,7 @@ def initialize_ai_models():
     
     #class Yolov11MultiTask init check
     if YOLOv11MultiTask is None:
-        print("Cant use Ai modules")
+        print("Cant use Ai modules", flush=True)
         return False
     
     try:
@@ -114,14 +114,14 @@ def initialize_ai_models():
             device = "cuda" if torch.cuda.is_available() else "cpu"
             ai_model = YOLOv11MultiTask(yolo_model, num_classes_dict).to(device)
             
-            print(f"AI 모델이 성공적으로 로드되었습니다. (Device: {device})")
+            print(f"AI 모델이 성공적으로 로드되었습니다. (Device: {device})", flush=True)
             return True
         else:
-            print(f"모델 파일을 찾을 수 없습니다: {model_path}")
+            print(f"모델 파일을 찾을 수 없습니다: {model_path}", flush=True)
             return False
             
     except Exception as e:
-        print(f"AI 모델 초기화 실패: {e}")
+        print(f"AI 모델 초기화 실패: {e}", flush=True)
         return False
     
 
@@ -191,6 +191,7 @@ def recommend(): #content type -> multipart/form-data
         content_type=request.content_type
         if content_type and content_type.startswith('multipart/form-data'):
             #parse json data
+            
             json_data=request.form.get('data')
             if not json_data:
                 return jsonify({"error": "No data received"}), 400
@@ -200,6 +201,9 @@ def recommend(): #content type -> multipart/form-data
             except json.JSONDecodeError: #exception check
                 return jsonify({"error": "Invalid JSON format"}), 400
             
+            #debug print input json data
+            print(f"[BE] recommend input data: {data}", flush=True)
+
             location=data.get('location')#should be a string, not coordinates
             latitude=data.get('latitude')#to use weather api
             longitude=data.get('longitude')
@@ -213,7 +217,7 @@ def recommend(): #content type -> multipart/form-data
                 uploaded_files = request.files.getlist('image')  # 단수형도 확인
             if not uploaded_files:
                 # 혹시 다른 필드명이 있는지 확인
-                print(f"[BE] 사용 가능한 파일 필드들: {list(request.files.keys())}")
+                print(f"[BE] 사용 가능한 파일 필드들: {list(request.files.keys())}", flush=True)
                 uploaded_files = []
         else:
             return jsonify({"error":"Unsupported data format, use multipart/form-data"}), 400
@@ -230,24 +234,24 @@ def recommend(): #content type -> multipart/form-data
         # 이미지 분석 (있는 경우)
         ai_attributes=None
 
-        print(f"[BE] 이미지 분석 조건 체크:")
-        print(f"[BE] - uploaded_files 존재: {uploaded_files is not None}")
-        print(f"[BE] - uploaded_files 개수: {len(uploaded_files) if uploaded_files else 0}")
-        print(f"[BE] - ai_model 상태: {ai_model is not None}")
+        print(f"[BE] 이미지 분석 조건 체크:", flush=True)
+        print(f"[BE] - uploaded_files 존재: {uploaded_files is not None}", flush=True)
+        print(f"[BE] - uploaded_files 개수: {len(uploaded_files) if uploaded_files else 0}", flush=True)
+        print(f"[BE] - ai_model 상태: {ai_model is not None}", flush=True)
         
         if uploaded_files:
             for i, f in enumerate(uploaded_files):
-                print(f"[BE] - 파일 {i}: {f.filename if f else 'None'}")
+                print(f"[BE] - 파일 {i}: {f.filename if f else 'None'}", flush=True)
 
         if uploaded_files and len(uploaded_files)>0 and ai_model is not None:
             try:
-                print("[BE] recommend process : uploaded image length:"+str(len(uploaded_files)))
+                print("[BE] recommend process : uploaded image length:"+str(len(uploaded_files)), flush=True)
                 
                 results_list=[]
 
                 for idx, uploaded_file in enumerate(uploaded_files):
                     if uploaded_file.filename:
-                        print("[BE] recommend process : processing image "+str(idx)+" / "+str(len(uploaded_files)-1))
+                        print("[BE] recommend process : processing image "+str(idx)+" / "+str(len(uploaded_files)-1), flush=True)
 
                         try:
                             uploaded_file.seek(0)
@@ -255,19 +259,19 @@ def recommend(): #content type -> multipart/form-data
                             image=Image.open(io.BytesIO(image_bytes))
                             image_np=cv2.cvtColor(np.array(image),cv2.COLOR_RGB2BGR)
 
-                            print("[BE] recommend process : YOLO object detection start on "+str(idx))
+                            print("[BE] recommend process : YOLO object detection start on "+str(idx), flush=True)
 
                             results=ai_model.detect(image_np)
                             crops=ai_model.extract_crops(image_np, results)
 
                             #predict attributes
                             if crops and len(crops)>0:
-                                print("[BE] recommend process : predict attributes on "+str(idx))
+                                print("[BE] recommend process : predict attributes on "+str(idx), flush=True)
                                 crop, bbox, conf, cls = crops[0]
                                 
                                 # 디버깅: 변수 타입 정보 출력
-                                print(f"[BE] crop type: {type(crop)}, bbox type: {type(bbox)}, conf type: {type(conf)}, cls type: {type(cls)}")
-                                print(f"[BE] bbox value: {bbox}")
+                                print(f"[BE] crop type: {type(crop)}, bbox type: {type(bbox)}, conf type: {type(conf)}, cls type: {type(cls)}", flush=True)
+                                print(f"[BE] bbox value: {bbox}", flush=True)
 
                                 image_attributes=ai_model.predict_attributes(crop, CLASS_MAPPINGS)
 
@@ -280,7 +284,7 @@ def recommend(): #content type -> multipart/form-data
                                     else:
                                         bbox_list = [float(bbox)] if isinstance(bbox, (int, float)) else None
                                 except Exception as bbox_error:
-                                    print(f"[BE] bbox 변환 실패: {bbox_error}")
+                                    print(f"[BE] bbox 변환 실패: {bbox_error}", flush=True)
                                     bbox_list = None
 
                                 image_result={
@@ -292,9 +296,9 @@ def recommend(): #content type -> multipart/form-data
                                     "bbox": bbox_list
                                 }
                                 results_list.append(image_result)
-                                print("[BE] recommend process : attributes prediction done on "+str(idx))
+                                print("[BE] recommend process : attributes prediction done on "+str(idx), flush=True)
                             else:
-                                print("[BE] recommend process : no valid crops found on "+str(idx))
+                                print("[BE] recommend process : no valid crops found on "+str(idx), flush=True)
                                 image_result={
                                     'id': idx,
                                     'filename': uploaded_file.filename,
@@ -305,7 +309,7 @@ def recommend(): #content type -> multipart/form-data
                                 }
                                 results_list.append(image_result)
                         except Exception as e:
-                            print("[BE] recommend process : error occurred on "+str(idx)+": "+str(e))
+                            print("[BE] recommend process : error occurred on "+str(idx)+": "+str(e), flush=True)
                             error_result={
                                 'id': idx,
                                 'filename': uploaded_file.filename,
@@ -315,31 +319,31 @@ def recommend(): #content type -> multipart/form-data
                             results_list.append(error_result)
                 
                 if results_list:
-                    print(f"[BE] recommend process : combining {len(results_list)} image results")
+                    print(f"[BE] recommend process : combining {len(results_list)} image results", flush=True)
                     ai_attributes = combine_multiple_image_results(results_list)
-                    print(f"[BE] recommend process : image analysis combination done")
+                    print(f"[BE] recommend process : image analysis combination done", flush=True)
                 else:
-                    print("[BE] recommend process : no valid image results")
+                    print("[BE] recommend process : no valid image results", flush=True)
                     ai_attributes = None
                                
             except Exception as e:
-                print(f"[BE] 이미지 분석 실패: {e}")
+                print(f"[BE] 이미지 분석 실패: {e}", flush=True)
                 ai_attributes = None
         else:
             if not uploaded_files or len(uploaded_files) == 0:
-                print("[BE] 업로드된 이미지가 없습니다")
+                print("[BE] 업로드된 이미지가 없습니다", flush=True)
             elif ai_model is None:
-                print("[BE] AI 모델이 로드되지 않았습니다")
+                print("[BE] AI 모델이 로드되지 않았습니다", flush=True)
             else:
-                print("[BE] 알 수 없는 이유로 이미지 분석을 건너뜁니다")
+                print("[BE] 알 수 없는 이유로 이미지 분석을 건너뜁니다", flush=True)
         
         # ✅ 실제 날씨 API 호출
-        print(f"[WEATHER] 실제 날씨 조회 시작: 위도={latitude}, 경도={longitude}")
+        print(f"[WEATHER] 실제 날씨 조회 시작: 위도={latitude}, 경도={longitude}", flush=True)
         try:
             weather_info = weather_api.get_weather_info(latitude, longitude)
-            print(f"[WEATHER] 날씨 조회 성공: {weather_info}")
+            print(f"[WEATHER] 날씨 조회 성공: {weather_info}", flush=True)
         except Exception as weather_error:
-            print(f"[WEATHER] 날씨 API 실패: {weather_error}")
+            print(f"[WEATHER] 날씨 API 실패: {weather_error}", flush=True)
             # 폴백: 기본 날씨 정보 사용
             weather_info = {
                 "temperature": 23.5,
@@ -358,17 +362,19 @@ def recommend(): #content type -> multipart/form-data
                 gemini_api_key=None#os.getenv("GEMINI_API_KEY")
             )
             
-            return jsonify({
+            debug_json={
                 "success": True,
                 "weather": weather_info,
                 "recommendation_text": recommendation_result.get("recommendation_text", "추천을 생성했습니다."),
                 "suggested_items": recommendation_result.get("categories", ["반팔티", "청바지"]),
                 "ai_analysis": ai_attributes,
                 "recommendation_details": recommendation_result
-            }), 200
+            }
+            print(f"[BE] : 추천 생성 성공: {debug_json}", flush=True)
+            return jsonify(debug_json), 200
             
         except Exception as e:
-            print(f"추천 생성 실패: {e}")
+            print(f"추천 생성 실패: {e}", flush=True)
             # 폴백: 기존 더미 데이터 반환
             return jsonify({
                 "success": True,
@@ -427,7 +433,7 @@ def test_weather_api_endpoint():
         lat = request.args.get('lat', 37.5665, type=float)  # 기본값: 서울
         lon = request.args.get('lon', 126.9780, type=float)
         
-        print(f"[WEATHER_TEST] 테스트 요청: 위도={lat}, 경도={lon}")
+        print(f"[WEATHER_TEST] 테스트 요청: 위도={lat}, 경도={lon}", flush=True)
         
         # 날씨 API 호출
         weather_data = weather_api.get_weather_info(lat, lon)

@@ -32,8 +32,8 @@ class KoreaWeatherAPI:
         self.XO = 43             # 기준점 X좌표(GRID)
         self.YO = 136            # 기준점 Y좌표(GRID)
         
-        print(f"[WEATHER] API init")
-        print(f"[WEATHER] API key status : {'SET' if self.service_key_decoded else 'CANNOTREAD'}")
+        print(f"[WEATHER] API init", flush=True)
+        print(f"[WEATHER] API key status : {'SET' if self.service_key_decoded else 'CANNOTREAD'}", flush=True)
     
     def get_weather_info(self, latitude, longitude):
         """
@@ -53,27 +53,27 @@ class KoreaWeatherAPI:
             }
         """
         try:
-            print(f"[WEATHER] REQ START: lat={latitude}, lon={longitude}")
+            print(f"[WEATHER] REQ START: lat={latitude}, lon={longitude}", flush=True)
             
             # 1. 위경도를 기상청 격자좌표로 변환
             grid_x, grid_y = self.convert_coords_to_grid(latitude, longitude)
-            print(f"[WEATHER] convert coordinates: X={grid_x}, Y={grid_y}")
+            print(f"[WEATHER] convert coordinates: X={grid_x}, Y={grid_y}", flush=True)
             
             # 2. API 호출용 시간 정보 생성
             base_date, base_time = self.get_forecast_time()
-            print(f"[WEATHER] forecast base time : {base_date} {base_time}")
+            print(f"[WEATHER] forecast base time : {base_date} {base_time}", flush=True)
             
             # 3. 기상청 API 호출
             weather_data = self.call_weather_api(grid_x, grid_y, base_date, base_time)
             
             # 4. 데이터 파싱 및 반환
             result = self.parse_weather_data(weather_data)
-            print(f"[WEATHER] final result: {result}")
+            print(f"[WEATHER] final result: {result}", flush=True)
 
             return result
             
         except Exception as e:
-            print(f"[WEATHER] error : {e}")
+            print(f"[WEATHER] error : {e}", flush=True)
             return self.get_fallback_weather()
     
     def convert_coords_to_grid(self, lat, lon):
@@ -113,7 +113,7 @@ class KoreaWeatherAPI:
             return int(x), int(y)
             
         except Exception as e:
-            print(f"[WEATHER] failed convert coordinates: {e}")
+            print(f"[WEATHER] failed convert coordinates: {e}", flush=True)
             # 서울 기본 좌표 반환
             return 60, 127
     
@@ -165,8 +165,8 @@ class KoreaWeatherAPI:
                 'ny': str(ny)
             }
             
-            print(f"[WEATHER] API call: {url}")
-            print(f"[WEATHER] param: nx={nx}, ny={ny}, date={base_date}, time={base_time}")
+            print(f"[WEATHER] API call: {url}", flush=True)
+            print(f"[WEATHER] param: nx={nx}, ny={ny}, date={base_date}, time={base_time}", flush=True)
             
             response = requests.get(url, params=params, timeout=10)
             
@@ -175,18 +175,18 @@ class KoreaWeatherAPI:
                 
                 # API 응답 상태 확인
                 if data.get('response', {}).get('header', {}).get('resultCode') == '00':
-                    print(f"[WEATHER] API call success")
+                    print(f"[WEATHER] API call success", flush=True)
                     return data
                 else:
                     error_msg = data.get('response', {}).get('header', {}).get('resultMsg', 'Unknown error')
-                    print(f"[WEATHER] API error: {error_msg}")
+                    print(f"[WEATHER] API error: {error_msg}", flush=True)
                     raise Exception(f"API Error: {error_msg}")
             else:
-                print(f"[WEATHER] HTTP error: {response.status_code}")
+                print(f"[WEATHER] HTTP error: {response.status_code}", flush=True)
                 raise Exception(f"HTTP Error: {response.status_code}")
                 
         except Exception as e:
-            print(f"[WEATHER] API call failed: {e}")
+            print(f"[WEATHER] API call failed: {e}", flush=True)
             raise e
     
     def parse_weather_data(self, data):
@@ -266,7 +266,7 @@ class KoreaWeatherAPI:
             return result
             
         except Exception as e:
-            print(f"[WEATHER] failed parse data: {e}")
+            print(f"[WEATHER] failed parse data: {e}", flush=True)
             return self.get_fallback_weather()
     
     def get_sky_condition(self, sky_code):
@@ -312,18 +312,18 @@ def test_weather_api():
     ]
     
     for location in test_locations:
-        print(f"\n{'='*50}")
-        print(f"{location['name']} 날씨 조회")
-        print(f"{'='*50}")
+        print(f"\n{'='*50}", flush=True)
+        print(f"{location['name']} 날씨 조회", flush=True)
+        print(f"{'='*50}", flush=True)
         
         weather = weather_api.get_weather_info(location['lat'], location['lon'])
         
-        print(f"온도: {weather['temperature']}°C")
-        print(f"날씨: {weather['condition']}")
-        print(f"습도: {weather['humidity']}%")
-        print(f"풍속: {weather['wind_speed']}m/s")
+        print(f"온도: {weather['temperature']}°C", flush=True)
+        print(f"날씨: {weather['condition']}", flush=True)
+        print(f"습도: {weather['humidity']}%", flush=True)
+        print(f"풍속: {weather['wind_speed']}m/s", flush=True)
 
 
 if __name__ == "__main__":
-    print("한국 기상청 날씨 API 테스트")
+    print("한국 기상청 날씨 API 테스트", flush=True)
     test_weather_api()
