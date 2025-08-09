@@ -359,7 +359,7 @@ def recommend(): #content type -> multipart/form-data
                 user_prompt=user_request,
                 style_preferences=style_select,
                 ai_attributes=ai_attributes,
-                gemini_api_key=None#os.getenv("GEMINI_API_KEY")
+                gemini_api_key=os.getenv("GEMINI_API_KEY")
             )
             
             debug_json={

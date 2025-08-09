@@ -40,17 +40,22 @@ def final_recommendation(
         (weather_attrs.get("detail", []), 1),
     )
     try:
-        import google.generativeai as genai
+        # Gemini API 키가 있을 때만 LLM 추천 메시지 생성
+        if gemini_api_key and gemini_api_key != "your_gemini_api_key_here":
+            import google.generativeai as genai
 
-        genai.configure(api_key=gemini_api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        llm_prompt = f"""
+            genai.configure(api_key=gemini_api_key)
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            llm_prompt = f"""
 오늘의 날씨: {weather.get('temperature', '')}°C, {weather.get('condition', '')}
 사용자 요청: {prompt_info.get('cleaned_request', user_prompt)}
 추천 속성: {', '.join(categories[:3])}, {', '.join(materials[:2])}, {', '.join(colors[:2])}
 """
-        response = model.generate_content(llm_prompt)
-        recommendation_text = response.text.strip()
+            response = model.generate_content(llm_prompt)
+            recommendation_text = response.text.strip()
+        else:
+            # API 키가 없거나 기본값인 경우 기본 추천 메시지 사용
+            raise Exception("Gemini API key not configured")
     except Exception as e:
         print(f"[Warning] LLM 추천 메시지 실패: {e}", flush=True)
         recommendation_text = f"오늘 {weather.get('temperature','')}°C {weather.get('condition','')} 날씨에는 {', '.join(categories[:3])}를 추천합니다."
