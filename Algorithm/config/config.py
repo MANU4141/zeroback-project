@@ -1,7 +1,12 @@
-MODEL_PATHS = {
-    "yolo": R"C:\Users\rkdgu\Desktop\VSC_clone_zeroback\zeroback-project\Algorithm\AI\models\YOLOv11_large_20000_75.pt"
-}  # 아직 small 사용 권장.
+# config/config.py
 
+# 모델 경로 설정
+MODEL_PATHS = {
+    "yolo": r"D:\end_github_zeroback\zeroback-project\backend\models\YOLOv11_large.pt",
+    "resnet": r"D:\end_github_zeroback\zeroback-project\backend\models\ResNet50_45.pth",
+}
+
+# 클래스 매핑
 CLASS_MAPPINGS = {
     "category": [
         "탑",  # 0

@@ -6,12 +6,12 @@ info:
 host: localhost:5000
 basePath: /
 schemes:
-- http
+  - http
 consumes:
-- application/json
-- multipart/form-data
+  - application/json
+  - multipart/form-data
 produces:
-- application/json
+  - application/json
 definitions:
   Error:
     type: object
@@ -20,30 +20,29 @@ definitions:
         type: string
         description: 오류 메시지
     required:
-    - error
+      - error
 paths:
   /api/recommend:
     post:
       tags:
-      - Recommendation
+        - Recommendation
       summary: AI 기반 의상 추천
       description: JSON 데이터와 이미지를 함께 받아서 AI가 의상을 추천합니다
       consumes:
-      - multipart/form-data
+        - multipart/form-data
       produces:
-      - application/json
+        - application/json
       parameters:
-      - name: data
-        in: formData
-        type: string
-        required: true
-        description: 'JSON 형태의 요청 데이터 (예: {"location": "서울", "style_select": ["스트릿",
-          "캐주얼"], "user_request": "귀엽게 입고 싶어요"})'
-      - name: image
-        in: formData
-        type: file
-        required: false
-        description: 의류 이미지 파일 (선택사항)
+        - name: data
+          in: formData
+          type: string
+          required: true
+          description: 'JSON 형태의 요청 데이터 (예: {"location": "서울", "style_select": ["스트릿", "캐주얼"], "user_request": "귀엽게 입고 싶어요"})'
+        - name: image
+          in: formData
+          type: file
+          required: false
+          description: 의류 이미지 파일 (선택사항)
       responses:
         200:
           description: 추천 성공
@@ -96,11 +95,11 @@ paths:
   /api/health:
     get:
       tags:
-      - Utility
+        - Utility
       summary: 서버 상태 확인
       description: 서버가 정상적으로 동작하는지 확인합니다
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: 서버 정상
@@ -114,12 +113,11 @@ paths:
   /api/makeswagger:
     get:
       tags:
-      - Utility
+        - Utility
       summary: Swagger YAML 파일 생성
-      description: 현재 API 스펙을 바탕으로 swagger.yaml 파일을 서버 폴더에 생성합니다(github/online 에디터
-        공유용)
+      description: 현재 API 스펙을 바탕으로 swagger.yaml 파일을 서버 폴더에 생성합니다(github/online 에디터 공유용)
       produces:
-      - application/json
+        - application/json
       responses:
         200:
           description: Swagger 파일 생성 성공

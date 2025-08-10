@@ -25,7 +25,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 환경변수 설정
-ENV FLASK_APP=app.py
 ENV FLASK_ENV=production
 ENV PYTHONPATH=/app
 
@@ -34,7 +33,7 @@ EXPOSE 5000
 
 # 헬스체크 추가
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:5000/api/health || exit 1
+    CMD curl -sf http://localhost:5000/api/health || exit 1
 
-# 애플리케이션 실행
-CMD ["python", "app.py"]
+# 애플리케이션 실행 (run.py 진입점 사용)
+CMD ["python", "run.py"]

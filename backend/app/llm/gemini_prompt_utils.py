@@ -53,12 +53,12 @@ def analyze_user_prompt(
 
 JSON 예시:
 {{
-  "keywords": ["키워드1", "키워드2"],
-  "mood": "무드 설명",
-  "occasion": "상황 설명",
-  "special_requests": ["특별 요청1"],
-  "color_preferences": ["색상1"],
-  "cleaned_request": "정리된 요청 문장"
+"keywords": ["키워드1", "키워드2"],
+"mood": "무드 설명",
+"occasion": "상황 설명",
+"special_requests": ["특별 요청1"],
+"color_preferences": ["색상1"],
+"cleaned_request": "정리된 요청 문장"
 }}
 """
     try:
