@@ -60,6 +60,8 @@ source venv/bin/activate
 
 # 의존성 설치
 pip install -r requirements.txt
+
+# 별 필요 없음
 ```
 
 ### 2. 환경변수 설정
