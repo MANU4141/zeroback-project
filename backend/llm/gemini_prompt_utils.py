@@ -5,11 +5,10 @@ Gemini LLM을 활용한 사용자 프롬프트 정리 및 구조화 모듈
 from typing import Dict
 import google.generativeai as genai
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv('GEMINI_API_KEY')
-genai.configure(api_key=GOOGLE_API_KEY)
+# 환경변수 또는 직접 입력
+GEMINI_API_KEY = "secret"  # 보안상 유출 주의, 예시의 키는 그대로 사용 금지
+os.environ["GOOGLE_API_KEY"] = GEMINI_API_KEY  # 환경변수에도 명시적으로 등록
 
 
 def analyze_user_prompt(
@@ -31,13 +30,7 @@ def analyze_user_prompt(
             "cleaned_request": str
         }
     """
-    api_key = api_key or GOOGLE_API_KEY
-    
-    # API 키가 없거나 기본값인 경우 기본 응답 반환
-    if not api_key or api_key == "your_gemini_api_key_here":
-        print("[Warning] Gemini API key not configured, using fallback response", flush=True)
-        return {"cleaned_request": user_prompt}
-    
+    api_key = api_key or GEMINI_API_KEY
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel("gemini-1.5-flash")
 
@@ -81,17 +74,14 @@ JSON 예시:
         else:
             return {"cleaned_request": user_prompt}
     except Exception as e:
-        print(f"Gemini 분석 오류: {e}", flush=True)
+        print(f"Gemini 분석 오류: {e}")
         return {"cleaned_request": user_prompt}
 
 
 # 예시 사용법
 if __name__ == "__main__":
-    '''for m in genai.list_models():#사용가능한 모델 출력
-        if 'generateContent' in m.supported_generation_methods:
-            print(m.name)'''
     prompt = "오늘 데이트라서 귀엽고 깔끔하게 입고 싶어요. 파스텔톤 좋아요."
     result = analyze_user_prompt(prompt, style_preferences=["로맨틱", "캐주얼"])
-    print("Gemini 분석 결과:", flush=True)
+    print("Gemini 분석 결과:")
     for k, v in result.items():
-        print(f"{k}: {v}", flush=True)
+        print(f"{k}: {v}")

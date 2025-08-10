@@ -1,21 +1,12 @@
-import os
+# config/config.py
 
-# Docker 환경 감지
-def get_model_path():
-    # Docker 컨테이너 내부에서는 /app이 작업 디렉토리
-    if os.path.exists("/app/models/YOLOv11_small.pt"):
-        return "models/YOLOv11_small.pt"
-    # 로컬 개발 환경
-    elif os.path.exists("backend/models/YOLOv11_small.pt"):
-        return "backend/models/YOLOv11_small.pt"
-    # 절대 경로로 시도
-    else:
-        return "models/YOLOv11_small.pt"
-
+# 모델 경로 설정
 MODEL_PATHS = {
-    "yolo": get_model_path()
-}  # 아직 small 사용 권장.
+    "yolo": r"D:\end_github_zeroback\zeroback-project\backend\models\YOLOv11_large.pt",
+    "resnet": r"D:\end_github_zeroback\zeroback-project\backend\models\ResNet50_45.pth",
+}
 
+# 클래스 매핑
 CLASS_MAPPINGS = {
     "category": [
         "탑",  # 0
