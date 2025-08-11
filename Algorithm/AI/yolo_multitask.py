@@ -1,11 +1,6 @@
 import torch
 import torch.nn as nn
 
-try:
-    from backend.config.config import MODEL_PATHS, CLASS_MAPPINGS
-except ImportError:
-    from config.config import MODEL_PATHS, CLASS_MAPPINGS
-
 
 class YOLOv11MultiTask:
     def __init__(self, yolo_model):
