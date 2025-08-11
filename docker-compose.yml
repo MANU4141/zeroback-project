@@ -41,18 +41,33 @@ services:
       # 개발 시 코드 변경사항 반영
       - ./backend:/app:ro
       - backend-logs:/app/logs
+      # AI 모델과 데이터 볼륨 (읽기 전용)
+      - ./backend/models:/app/models:ro
+      - ./backend/DATA:/app/DATA:ro
     networks:
       - zeroback-network
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       - FLASK_ENV=production
-      - FLASK_APP=app.py
+      - FLASK_APP=run.py
       - PYTHONPATH=/app
+      - FLASK_RUN_HOST=0.0.0.0
+      - FLASK_RUN_PORT=5000
+      - FLASK_DEBUG=false
+      # CORS 설정
+      - CORS_ORIGINS=*
+      # API 키들은 .env 파일이나 환경변수로 설정하세요
+      # - WEATHER_API_KEY_ENCODE=your_weather_api_key_encode
+      # - WEATHER_API_KEY_DECODE=your_weather_api_key_decode  
+      # - GEMINI_API_KEY=your_gemini_api_key
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 60s
 
 # 네트워크 설정
 networks:
