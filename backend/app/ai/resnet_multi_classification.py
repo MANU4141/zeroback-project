@@ -9,10 +9,10 @@ from PIL import Image
 
 # ============ 설정값 ============
 try:
-    from ...config import Config
+    from config import Config
 except Exception:
     # Fallback for direct script execution
-    from backend.config import Config  # type: ignore
+    from config import Config  # type: ignore
 
 
 # ============ ResNet50 기반 다중 작업 모델 ============

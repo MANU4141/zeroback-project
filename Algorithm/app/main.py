@@ -4,7 +4,7 @@ import cv2
 import torch
 from ultralytics import YOLO
 from config.config import CLASS_MAPPINGS, MODEL_PATHS
-from AI.yolo_multitask import YOLOv11MultiTask
+from AI.yolo_classification import YOLOv11MultiTask
 from recommender.final_recommender import final_recommendation
 
 app = FastAPI()

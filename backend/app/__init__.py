@@ -6,10 +6,10 @@ from flask_cors import CORS
 from flasgger import Swagger
 
 # 내부 모듈 import
-from backend.config import Config
-from backend.app.services import initialize_ai_models
-from backend.app.utils import build_db_images as _build_db_images_internal
-from backend.app.routes import register_routes
+from config import Config
+from app.services import initialize_ai_models
+from app.utils import build_db_images as _build_db_images_internal
+from app.routes import register_routes
 
 
 def create_app():

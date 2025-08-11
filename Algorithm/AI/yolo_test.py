@@ -16,7 +16,7 @@ if project_root not in sys.path:
 
 from recommender.final_recommender import final_recommendation
 from config.config import CLASS_MAPPINGS, MODEL_PATHS
-from AI.yolo_multitask import YOLOv11MultiTask
+from AI.yolo_classification import YOLOv11MultiTask
 
 
 # ========================================
@@ -117,7 +117,7 @@ def main():
     num_classes_dict = {task: len(classes) for task, classes in CLASS_MAPPINGS.items()}
     yolo_model = YOLO(yolo_pt_path)
     model = YOLOv11MultiTask(yolo_model)
-    from AI.resnet_multitask import FashionAttributePredictor
+    from AI.resnet_multi_classification import FashionAttributePredictor
 
     resnet_model = FashionAttributePredictor(device=device)
 

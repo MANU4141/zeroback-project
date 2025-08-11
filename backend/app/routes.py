@@ -5,19 +5,19 @@ from flask import request, jsonify, current_app
 from flasgger import swag_from
 from datetime import datetime
 
-from backend.app.schemas import (
+from app.schemas import (
     recommend_schema,
     health_check_schema,
     debug_ai_status_schema,
     debug_weather_test_schema,
 )
-from backend.app.services import (
+from app.services import (
     get_weather_info,
     analyze_single_image,
     final_recommendation,
     get_ai_model_status,
 )
-from backend.app.utils import parse_images, combine_multiple_image_results
+from app.utils import parse_images, combine_multiple_image_results
 
 
 def register_routes(app):

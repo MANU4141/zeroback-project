@@ -2,6 +2,7 @@ import requests
 import os
 import math
 import logging
+from typing import Optional
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
@@ -196,7 +197,7 @@ class KoreaWeatherAPI:
         """하늘 상태 코드를 문자열로 변환합니다."""
         return {1: "맑음", 3: "구름많음", 4: "흐림"}.get(sky_code, "알 수 없음")
 
-    def _get_precipitation_type(self, pty_code: int) -> str | None:
+    def _get_precipitation_type(self, pty_code: int) -> Optional[str]:
         """강수 형태 코드를 문자열로 변환합니다. 강수 없으면 None 반환."""
         return {1: "비", 2: "비/눈", 3: "눈", 4: "소나기"}.get(pty_code)
 

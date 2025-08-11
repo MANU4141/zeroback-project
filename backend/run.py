@@ -5,8 +5,8 @@ import sys
 # 프로젝트 루트 디렉토리를 Python 경로에 추가
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from backend.app import create_app
-from backend.config import Config
+from app import create_app
+from config import Config
 
 # 애플리케이션 인스턴스 생성
 app = create_app()

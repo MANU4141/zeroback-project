@@ -1,8 +1,8 @@
 import logging
-from backend.app.weather import KoreaWeatherAPI
-from backend.app.llm.gemini_prompt_utils import analyze_user_prompt
+from app.weather import KoreaWeatherAPI
+from app.llm.gemini_prompt_utils import analyze_user_prompt
 from collections import Counter
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 
 def _local_weather_rules(weather: dict) -> dict:
@@ -85,9 +85,9 @@ def final_recommendation(
     weather: Dict[str, Any],
     user_prompt: str,
     style_preferences: List[str],
-    ai_attributes: Dict[str, List[str]] | None = None,
-    gemini_api_key: str | None = None,
-    db_images: List[Dict[str, Any]] | None = None,
+    ai_attributes: Optional[Dict[str, List[str]]] = None,
+    gemini_api_key: Optional[str] = None,
+    db_images: Optional[List[Dict[str, Any]]] = None,
     page: int = 1,
     per_page: int = 3,
 ):

@@ -5,12 +5,12 @@ from flask import current_app
 
 # 의존 모듈 로드
 try:
-    from backend.app.ai.yolo_multitask import YOLOv11MultiTask
-    from backend.app.ai.resnet_multitask import FashionAttributePredictor
-    from backend.app.recommender.final_recommender import final_recommendation
-    from backend.app.weather import KoreaWeatherAPI
-    from backend.config import Config
-    from backend.app.utils import preprocess_image
+    from app.ai.yolo_classification import YOLOv11MultiTask
+    from app.ai.resnet_multi_classification import FashionAttributePredictor
+    from app.recommender.final_recommender import final_recommendation
+    from app.weather import KoreaWeatherAPI
+    from config import Config
+    from app.utils import preprocess_image
 except ImportError as e:
     logging.basicConfig(level=logging.INFO)
     logging.error(f"서비스 모듈 import 실패: {e}")
@@ -69,7 +69,7 @@ def initialize_ai_models(app):
 
 def get_ai_model_status():
     """AI 모델의 현재 상태를 반환합니다."""
-    from backend.config import Config
+    from config import Config
 
     yolo_path = getattr(Config, "MODEL_PATHS", {}).get("yolo")
     status = {
