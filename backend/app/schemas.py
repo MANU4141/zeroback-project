@@ -272,6 +272,65 @@ debug_weather_test_schema = {
     },
 }
 
+# 이미지 서빙 API 스키마
+serve_image_schema = {
+    "tags": ["Utility"],
+    "summary": "이미지 파일 서빙",
+    "description": "백엔드 서버의 이미지 파일을 클라이언트에게 제공합니다",
+    "produces": ["image/jpeg", "image/png", "image/gif", "image/webp", "application/json"],
+    "parameters": [
+        {
+            "name": "filename",
+            "in": "path",
+            "type": "string",
+            "required": True,
+            "description": "이미지 파일명 (예: 1084011.jpg)",
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "이미지 파일 반환",
+            "schema": {"type": "file"},
+        },
+        400: {
+            "description": "잘못된 파일명",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "error": {"type": "string", "description": "오류 메시지"}
+                },
+            },
+        },
+        403: {
+            "description": "접근 권한 없음",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "error": {"type": "string", "description": "오류 메시지"}
+                },
+            },
+        },
+        404: {
+            "description": "파일을 찾을 수 없음",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "error": {"type": "string", "description": "오류 메시지"}
+                },
+            },
+        },
+        500: {
+            "description": "서버 오류",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "error": {"type": "string", "description": "오류 메시지"}
+                },
+            },
+        },
+    },
+}
+
 # 기존 코드와의 호환성을 위한 별칭들
 RECOMMENDED_IMAGE_SCHEMA = recommend_schema["responses"][200]["schema"]["properties"][
     "ai_analysis"

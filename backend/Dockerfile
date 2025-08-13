@@ -1,19 +1,18 @@
 # Backend Dockerfile
 FROM python:3.9-slim
 
-# 시스템 의존성 설치 (OpenCV-headless용 최소 의존성)
+# 시스템 의존성 설치 (OpenCV용 필수 라이브러리)
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     libglib2.0-0 \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
-    libgomp1 \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglvnd0 \
+    libgl1-mesa-dri \
+    libglu1-mesa \
+    libglx-mesa0 \
     curl \
     && rm -rf /var/lib/apt/lists/*
-
 # 작업 디렉토리 설정
 WORKDIR /app
 
