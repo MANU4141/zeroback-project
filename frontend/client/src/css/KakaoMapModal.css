@@ -1,30 +1,86 @@
-/* KakaoMapModal.css */
-/* 모달 레이아웃/지도/검색/도시 버튼 */
+/* ========== KakaoMapModal 공통 ========== */
+:root{
+  --purple:#6c63ff;
+  --purple-2:#7a6eff;
+  --bd:#e5e7eb;
+  --text:#222;
+  --muted:#666;
+  --card:#fff;
+  --shadow:0 6px 20px rgba(0,0,0,.12);
+  --radius:12px;
+  --radius-lg:16px;
+}
 
-.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+*{ box-sizing:border-box; }
+body { font-family: 'Pretendard', sans-serif; }
 
-.modal-content { background: #fff; padding: 20px; border-radius: 12px; width: 400px; max-width: 95%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; }
+/* 모달 오버레이 */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+}
 
-.close-btn { position: absolute; top: 10px; right: 10px; background: red; color: #fff; border: none;
-  padding: 5px 10px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+/* 모달 콘텐트 래퍼(폼에서 .modal 사용) */
+.modal {
+  width: 90%; max-width: 380px;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 20px;
+}
 
-.kakao-map { width: 100%; height: 300px; background: #f1f1f1; border-radius: 10px; margin-bottom: 15px; }
+.modal-title {
+  font-size: 18px; font-weight: 700; margin: 0 0 12px;
+}
 
-.search-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
-.modal-search { width: 100%; height: 50px; font-size: 16px; padding: 0 45px 0 15px; border: 1px solid #ccc; border-radius: 8px; outline: none; transition: border-color 0.3s; }
-.modal-search:focus { border-color: #6c63ff; }
+/* 검색 입력 래퍼 */
+.search-wrapper { width: 100%; margin-bottom: 12px; }
 
-.search-btn { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); background: #6c63ff; color: #fff;
-  border: none; border-radius: 6px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; cursor: pointer; }
+/* 검색 인풋 */
+.modal-search {
+  width: 100%; height: 48px;
+  font-size: 15px;
+  padding: 0 14px;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  outline: none; transition: border-color .2s;
+}
+.modal-search:focus { border-color: var(--purple); }
 
-.city-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 15px; }
-.city-btn { padding: 8px 14px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; font-weight: 500; transition: all .2s; }
-.city-btn:hover { background: #f0f0f0; border-color: #999; }
-.city-btn:active { background: #ddd; }
+/* 지도 박스 */
+.kakao-map {
+  width: 100%; height: 300px;
+  background: #f1f1f1;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+}
 
-.modal-confirm { width: 100%; padding: 12px; font-size: 16px; font-weight: bold; color: #fff;
-  background: linear-gradient(90deg, #6c63ff, #7a6eff); border: none; border-radius: 10px; cursor: pointer; transition: .3s; }
-.modal-confirm:hover { background: linear-gradient(90deg, #5a54e0, #6c63ff); }
+/* 도시 퀵 버튼 */
+.city-grid{
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.city-btn{
+  padding: 8px 14px;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: .15s;
+}
+.city-btn:hover{ background: #f7f7ff; border-color:#cfd2da; }
+
+/* 확인 버튼 */
+.modal-confirm{
+  width: 100%;
+  height: 44px;
+  font-size: 15px; font-weight: 700; color: #fff;
+  border: 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--purple), var(--purple-2));
+  cursor: pointer; transition: .2s opacity;
+}
+.modal-confirm:hover{ opacity: .92; }
