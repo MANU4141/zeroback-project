@@ -1,4 +1,4 @@
-/* ========== ê³µí†µ ë³€ìˆ˜/ë¦¬ì…‹ ========== */
+/* ========== °øÅë º¯¼ö/¸®¼Â ========== */
 @import url('https://fonts.googleapis.com/css2?family=Pretendard&display=swap');
 
 :root{
@@ -17,7 +17,7 @@
 *{ box-sizing:border-box; }
 body{ font-family:'Pretendard', sans-serif; }
 
-/* ========== ì „ì²´ ë ˆì´ì•„ì›ƒ ========== */
+/* ========== ÀüÃ¼ ·¹ÀÌ¾Æ¿ô ========== */
 .result-shell{
   min-height:100vh;
   background:var(--bg);
@@ -25,7 +25,7 @@ body{ font-family:'Pretendard', sans-serif; }
   padding:32px 16px;
 }
 
-/* ì¹´ë“œ(í¼ê³¼ í­ í†µì¼: 520px) */
+/* Ä«µå(Æû°ú Æø ÅëÀÏ: 520px) */
 .result-card{
   width:100%; max-width:520px;
   background:var(--card);
@@ -34,7 +34,7 @@ body{ font-family:'Pretendard', sans-serif; }
   padding:22px;
 }
 
-/* í—¤ë” */
+/* Çì´õ */
 .result-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
 .result-title{ margin:0; font-size:24px; font-weight:700; color:var(--text); letter-spacing:-0.3px; }
 .retry-link{
@@ -43,12 +43,12 @@ body{ font-family:'Pretendard', sans-serif; }
 }
 .retry-link:disabled{ opacity:.6; cursor:not-allowed; }
 
-/* ìœ„ì¹˜ */
+/* À§Ä¡ */
 .result-sub{ display:flex; align-items:center; gap:6px; color:#555; margin-bottom:14px; }
 .pin{ font-size:17px; }
 .where{ font-weight:500; font-size:15px; }
 
-/* ë‚ ì”¨ ì¹© */
+/* ³¯¾¾ Ä¨ */
 .weather-chip{
   display:flex; justify-content:space-between; align-items:center; gap:10px;
   background:#fafafa; border:1px solid var(--bd);
@@ -61,7 +61,7 @@ body{ font-family:'Pretendard', sans-serif; }
 .weather-right{ text-align:right; color:#666; font-size:13px; }
 .w-meta{ line-height:1.2; }
 
-/* ë©”ì¸ ì´ë¯¸ì§€: 4:3 ê³ ì • (í¼ ì¹´ë“œ í­ê³¼ ê· í˜•) */
+/* ¸ŞÀÎ ÀÌ¹ÌÁö: 4:3 °íÁ¤ (Æû Ä«µå Æø°ú ±ÕÇü) */
 .viewer{
   display:grid; grid-template-columns:40px 1fr 40px;
   align-items:center; gap:8px; margin-bottom:10px;
@@ -74,7 +74,7 @@ body{ font-family:'Pretendard', sans-serif; }
 
 .hero{
   position:relative; border-radius:16px; overflow:hidden;
-  aspect-ratio: 4 / 3;         /* âœ… ë¹„ìœ¨ ê³ ì • */
+  aspect-ratio: 4 / 3;         /* ? ºñÀ² °íÁ¤ */
   background:#f3f4f6;
 }
 .hero-img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -88,7 +88,7 @@ body{ font-family:'Pretendard', sans-serif; }
   color:#777; font-size:14px;
 }
 
-/* ì¸ë„¤ì¼ */
+/* ½æ³×ÀÏ */
 .thumb-strip{
   display:flex; gap:10px; overflow-x:auto; padding:4px 2px 8px; scrollbar-width:thin;
 }
@@ -99,12 +99,12 @@ body{ font-family:'Pretendard', sans-serif; }
 .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 .thumb.active{ border-color:var(--purple); }
 
-/* íŒ */
+/* ÆÁ */
 .tip-card{ margin-top:14px; background:#fafafa; border:1px solid var(--bd); border-radius:16px; padding:15px; }
 .tip-title{ font-weight:700; font-size:15px; margin-bottom:6px; }
 .tip-body{ margin:0; color:#444; font-size:14px; line-height:1.6; }
 
-/* ë’¤ë¡œê°€ê¸° */
+/* µÚ·Î°¡±â */
 .back-btn{
   width:100%; margin-top:16px;
   border:none; cursor:pointer; height:44px;
@@ -113,7 +113,7 @@ body{ font-family:'Pretendard', sans-serif; }
 }
 .back-btn:hover{ opacity:.92; }
 
-/* ëª¨ë°”ì¼ */
+/* ¸ğ¹ÙÀÏ */
 @media (max-width:480px){
   .result-card{ padding:16px; max-width:100%; }
   .result-title{ font-size:22px; }

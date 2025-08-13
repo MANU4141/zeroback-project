@@ -66,11 +66,11 @@ export default function ResultPage() {
 
   const icon = (d) => {
     const s = String(d || "").toLowerCase();
-    if (s.includes("rain") || s.includes("비")) return "🌧️";
-    if (s.includes("snow") || s.includes("눈")) return "❄️";
-    if (s.includes("cloud") || s.includes("구름")) return "☁️";
-    if (s.includes("맑") || s.includes("clear")) return "☀️";
-    return "🌤️";
+    if (s.includes("rain") || s.includes("비")) return "??";
+    if (s.includes("snow") || s.includes("눈")) return "??";
+    if (s.includes("cloud") || s.includes("구름")) return "??";
+    if (s.includes("맑") || s.includes("clear")) return "??";
+    return "??";
   };
 
   // 다시 받기
@@ -118,7 +118,7 @@ export default function ResultPage() {
 
         {/* 위치 */}
         <div className="result-sub">
-          <div className="pin">📍</div>
+          <div className="pin">?</div>
           <div className="where">{location || "위치 미지정"}</div>
         </div>
 
@@ -152,7 +152,7 @@ export default function ResultPage() {
           {hasImages ? (
             <>
               <button className="nav-btn left" onClick={prev} aria-label="previous">
-                ‹
+                ?
               </button>
               <div className="hero">
                 <img src={heroSrc} alt={`추천 ${index + 1}`} className="hero-img" />
@@ -161,7 +161,7 @@ export default function ResultPage() {
                 </div>
               </div>
               <button className="nav-btn right" onClick={next} aria-label="next">
-                ›
+                ?
               </button>
             </>
           ) : (
@@ -191,13 +191,13 @@ export default function ResultPage() {
         {/* 스타일링 팁 */}
         {styling_tip && (
           <div className="tip-card">
-            <div className="tip-title">💡 스타일링 팁</div>
+            <div className="tip-title">? 스타일링 팁</div>
             <p className="tip-body">{styling_tip}</p>
           </div>
         )}
 
         <button className="back-btn" onClick={() => navigate("/")}>
-          ‹ 뒤로가기
+          ? 뒤로가기
         </button>
       </div>
     </div>
