@@ -1,130 +1,30 @@
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
+/* KakaoMapModal.css */
+/* 모달 레이아웃/지도/검색/도시 버튼 */
 
-.modal-content {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  width: 400px;
-  max-width: 95%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: red;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-}
+.modal-content { background: #fff; padding: 20px; border-radius: 12px; width: 400px; max-width: 95%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); display: flex; flex-direction: column; align-items: center; }
 
-.kakao-map {
-  width: 100%;
-  height: 300px;
-  background: #f1f1f1;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
+.close-btn { position: absolute; top: 10px; right: 10px; background: red; color: #fff; border: none;
+  padding: 5px 10px; border-radius: 6px; font-size: 14px; cursor: pointer; }
 
-.search-wrapper {
-  position: relative;
-  width: 100%;
-  margin-bottom: 15px;
-}
+.kakao-map { width: 100%; height: 300px; background: #f1f1f1; border-radius: 10px; margin-bottom: 15px; }
 
-.modal-search {
-  width: 100%;
-  height: 50px;
-  font-size: 16px;
-  padding: 0 45px 0 15px; 
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
-}
+.search-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
+.modal-search { width: 100%; height: 50px; font-size: 16px; padding: 0 45px 0 15px; border: 1px solid #ccc; border-radius: 8px; outline: none; transition: border-color 0.3s; }
+.modal-search:focus { border-color: #6c63ff; }
 
-.modal-search:focus {
-  border-color: #6c63ff;
-}
+.search-btn { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); background: #6c63ff; color: #fff;
+  border: none; border-radius: 6px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; }
 
-.search-btn {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  background: #6c63ff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-}
+.city-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 15px; }
+.city-btn { padding: 8px 14px; border: 1px solid #ccc; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; font-weight: 500; transition: all .2s; }
+.city-btn:hover { background: #f0f0f0; border-color: #999; }
+.city-btn:active { background: #ddd; }
 
-.city-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.city-btn {
-  padding: 8px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
-}
-
-.city-btn:hover {
-  background: #f0f0f0;
-  border-color: #999;
-}
-
-.city-btn:active {
-  background: #ddd;
-}
-
-.modal-confirm {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(90deg, #6c63ff, #7a6eff);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.modal-confirm:hover {
-  background: linear-gradient(90deg, #5a54e0, #6c63ff);
-}
+.modal-confirm { width: 100%; padding: 12px; font-size: 16px; font-weight: bold; color: #fff;
+  background: linear-gradient(90deg, #6c63ff, #7a6eff); border: none; border-radius: 10px; cursor: pointer; transition: .3s; }
+.modal-confirm:hover { background: linear-gradient(90deg, #5a54e0, #6c63ff); }
