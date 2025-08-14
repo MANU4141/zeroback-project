@@ -33,8 +33,8 @@ from config.config import CLASS_MAPPINGS
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 IMAGE_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\images"
 LABEL_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\labels"
-MODEL_PATH = r"D:\zeroback_KHJ_end\zeroback-project\backend\models\YOLOv11_large.pt"
-RESULTS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\YOLOv11_summary\RESULTS"
+MODEL_PATH = r"D:\zeroback_KHJ_end\zeroback-project\MODEL\last.pt"
+RESULTS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\YOLOv11_summary\RESULTS_last"
 
 # 21개 카테고리 정의
 CATEGORIES = CLASS_MAPPINGS["category"]
