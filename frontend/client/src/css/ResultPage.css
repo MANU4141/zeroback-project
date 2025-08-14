@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+/* ========== 공통 변수/리셋 ========== */
+@import url('https://fonts.googleapis.com/css2?family=Pretendard&display=swap');
 
 :root{
   --purple:#6c63ff;
@@ -9,11 +10,14 @@
   --muted:#777;
   --bd:#e5e7eb;
   --shadow:0 6px 20px rgba(0,0,0,.06);
+  --radius:12px;
+  --radius-lg:24px;
 }
 
 *{ box-sizing:border-box; }
-body{ font-family:'Noto Sans KR', sans-serif; }
+body{ font-family:'Pretendard', sans-serif; }
 
+/* ========== 전체 레이아웃 ========== */
 .result-shell{
   min-height:100vh;
   background:var(--bg);
@@ -21,53 +25,34 @@ body{ font-family:'Noto Sans KR', sans-serif; }
   padding:32px 16px;
 }
 
+/* 카드(폼과 폭 통일: 520px) */
 .result-card{
-  width:100%;
-  max-width:680px;                 /* 결과 카드 폭 (폼과 동일하게 맞추려면 520px로 바꾸면 됨) */
+  width:100%; max-width:520px;
   background:var(--card);
-  border-radius:24px;
+  border-radius:var(--radius-lg);
   box-shadow:var(--shadow);
   padding:22px;
 }
 
+/* 헤더 */
 .result-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-.result-title{
-  margin:0;
-  font-size:24px;
-  font-weight:700;
-  color:var(--text);
-  letter-spacing:-0.3px;
-}
+.result-title{ margin:0; font-size:24px; font-weight:700; color:var(--text); letter-spacing:-0.3px; }
 .retry-link{
-  background:none;
-  border:none;
-  color:var(--purple);
-  font-weight:600;
-  font-size:15px;
-  cursor:pointer;
+  background:none; border:none; color:var(--purple);
+  font-weight:600; font-size:15px; cursor:pointer;
 }
 .retry-link:disabled{ opacity:.6; cursor:not-allowed; }
 
-.result-sub{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:#555;
-  margin-bottom:14px;
-}
+/* 위치 */
+.result-sub{ display:flex; align-items:center; gap:6px; color:#555; margin-bottom:14px; }
 .pin{ font-size:17px; }
 .where{ font-weight:500; font-size:15px; }
 
+/* 날씨 칩 */
 .weather-chip{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  background:#fafafa;
-  border:1px solid var(--bd);
-  border-radius:16px;
-  padding:13px 15px;
-  margin-bottom:16px;
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+  background:#fafafa; border:1px solid var(--bd);
+  border-radius:16px; padding:13px 15px; margin-bottom:16px;
 }
 .weather-left{ display:flex; align-items:center; gap:10px; }
 .w-emoji{ font-size:26px; }
@@ -76,24 +61,20 @@ body{ font-family:'Noto Sans KR', sans-serif; }
 .weather-right{ text-align:right; color:#666; font-size:13px; }
 .w-meta{ line-height:1.2; }
 
-/* 메인 이미지: 4:3 비율 */
+/* 메인 이미지: 4:3 고정 (폼 카드 폭과 균형) */
 .viewer{
-  display:grid;
-  grid-template-columns:40px 1fr 40px;
-  align-items:center;
-  gap:8px;
-  margin-bottom:10px;
+  display:grid; grid-template-columns:40px 1fr 40px;
+  align-items:center; gap:8px; margin-bottom:10px;
 }
 .nav-btn{
-  border:none;
-  width:40px; height:40px; border-radius:50%;
-  background:rgba(0,0,0,.05); color:#333;
-  font-size:22px; cursor:pointer;
+  border:none; width:40px; height:40px; border-radius:50%;
+  background:rgba(0,0,0,.05); color:#333; font-size:22px; cursor:pointer;
 }
 .nav-btn:hover{ background:rgba(0,0,0,.08); }
+
 .hero{
   position:relative; border-radius:16px; overflow:hidden;
-  aspect-ratio: 4 / 3;   /* ? 비율 고정 */
+  aspect-ratio: 4 / 3;         /* ? 비율 고정 */
   background:#f3f4f6;
 }
 .hero-img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -102,11 +83,14 @@ body{ font-family:'Noto Sans KR', sans-serif; }
   background:rgba(0,0,0,.55); color:#fff; font-size:13px;
   padding:4px 8px; border-radius:999px;
 }
+.hero-empty{
+  width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:#777; font-size:14px;
+}
 
 /* 썸네일 */
 .thumb-strip{
-  display:flex; gap:10px; overflow-x:auto; padding:4px 2px 8px;
-  scrollbar-width:thin;
+  display:flex; gap:10px; overflow-x:auto; padding:4px 2px 8px; scrollbar-width:thin;
 }
 .thumb{
   min-width:96px; height:72px; border-radius:10px; overflow:hidden;
@@ -122,12 +106,14 @@ body{ font-family:'Noto Sans KR', sans-serif; }
 
 /* 뒤로가기 */
 .back-btn{
-  width:100%; margin-top:16px; border:none; cursor:pointer;
-  padding:14px; border-radius:999px; color:#fff; font-weight:700; font-size:15px;
+  width:100%; margin-top:16px;
+  border:none; cursor:pointer; height:44px;
+  border-radius:999px; color:#fff; font-weight:700; font-size:15px;
   background:linear-gradient(90deg, var(--purple), var(--purple-2));
 }
 .back-btn:hover{ opacity:.92; }
 
+/* 모바일 */
 @media (max-width:480px){
   .result-card{ padding:16px; max-width:100%; }
   .result-title{ font-size:22px; }

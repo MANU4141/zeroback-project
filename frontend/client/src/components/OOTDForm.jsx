@@ -1,3 +1,4 @@
+// src/components/OOTDForm.jsx
 import "../css/OOTDForm.css";
 import { useMemo, useState } from "react";
 import { FaMapMarkerAlt, FaCloudUploadAlt } from "react-icons/fa";
@@ -5,85 +6,56 @@ import { useNavigate } from "react-router-dom";
 import KakaoMapModal from "./KakaoMapModal";
 import axios from "axios";
 
+/**
+ * OOTDForm
+ * - 위치 선택(카카오 맵 모달)
+ * - 스타일 입력(자동완성 + 칩)
+ * - 추가 요청사항
+ * - 이미지 업로드(드래그&드롭/미리보기/개별삭제/전체삭제)
+ * - 제출 → /api/recommend 로 FormData 전송
+ * - 결과 페이지로 이동 시 재요청 대비용 requestPayload(state) 함께 전달
+ */
 export default function OOTDForm() {
   const navigate = useNavigate();
+
+  // 위치/좌표/모달
   const [location, setLocation] = useState("");
   const [coords, setCoords] = useState({ lat: null, lng: null });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // ✅ 스타일
+  // 스타일 입력/선택
   const [styles, setStyles] = useState([]);
   const [styleInput, setStyleInput] = useState("");
   const [suggestOpen, setSuggestOpen] = useState(false);
 
-  // ✅ 요청사항
+  // 요청사항
   const [request, setRequest] = useState("");
 
-  // ✅ 이미지
+  // 이미지
   const [images, setImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
 
-  // ✅ 스타일 마스터
+  // 스타일 마스터 (자동완성 소스)
   const STYLE_MASTER = useMemo(
     () => [
-    "레트로",
-    "로맨틱",
-    "리소트",
-    "매니시",
-    "모던",
-    "밀리터리",
-    "섹시",
-    "소피스트케이티드",
-    "스트리트",
-    "스포티",
-    "아방가르드",
-    "오리엔탈",
-    "웨스턴",
-    "젠더리스",
-    "컨트리",
-    "클래식",
-    "키치",
-    "톰보이",
-    "펑크",
-    "페미닌",
-    "프레피",
-    "히피",
-    "힙합",
+      "레트로","로맨틱","리소트","매니시","모던","밀리터리","섹시","소피스트케이티드",
+      "스트리트","스포티","아방가르드","오리엔탈","웨스턴","젠더리스","컨트리","클래식",
+      "키치","톰보이","펑크","페미닌","프레피","히피","힙합",
     ],
     []
   );
 
-  const COMMON_DEFAULTS = [  
-    "레트로",
-    "로맨틱",
-    "리소트",
-    "매니시",
-    "모던",
-    "밀리터리",
-    "섹시",
-    "소피스트케이티드",
-    "스트리트",
-    "스포티",
-    "아방가르드",
-    "오리엔탈",
-    "웨스턴",
-    "젠더리스",
-    "컨트리",
-    "클래식",
-    "키치",
-    "톰보이",
-    "펑크",
-    "페미닌",
-    "프레피",
-    "히피",
-    "힙합",];
+  // 기본 추천 세트 (전체선택)
+  const COMMON_DEFAULTS = [...STYLE_MASTER];
 
+  // 스타일 토글
   const toggleStyle = (style) => {
     setStyles((prev) =>
       prev.includes(style) ? prev.filter((s) => s !== style) : [...prev, style]
     );
   };
 
+  // 스타일 입력 엔터 → 칩 추가
   const handleStyleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -95,6 +67,7 @@ export default function OOTDForm() {
     }
   };
 
+  // 자동완성 필터
   const filteredSuggestions = useMemo(() => {
     if (!styleInput.trim()) return [];
     const q = styleInput.trim().toLowerCase();
@@ -103,7 +76,7 @@ export default function OOTDForm() {
     ).slice(0, 8);
   }, [STYLE_MASTER, styleInput, styles]);
 
-  // ✅ 업로드
+  // 업로드 핸들러
   const handleImageUpload = (fileList) => {
     const files = Array.from(fileList || []);
     if (!files.length) return;
@@ -111,7 +84,6 @@ export default function OOTDForm() {
   };
   const onInputChange = (e) => handleImageUpload(e.target.files);
   const clearImages = () => setImages([]);
-
   const onDragOver = (e) => { e.preventDefault(); setDragOver(true); };
   const onDragLeave = () => setDragOver(false);
   const onDrop = (e) => {
@@ -119,26 +91,27 @@ export default function OOTDForm() {
     setDragOver(false);
     handleImageUpload(e.dataTransfer.files);
   };
-
   const removeImageAt = (idx) => {
     setImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  // ✅ 제출
+  // 제출
   const handleSubmit = async () => {
     if (!location || styles.length === 0) {
       alert("위치와 스타일을 선택/입력해주세요.");
       return;
     }
 
+    // JSON 데이터
     const requestData = {
       location,
       latitude: coords.lat,
       longitude: coords.lng,
       style_select: styles,
-      user_request: request || ""
+      user_request: request || "",
     };
 
+    // FormData 구성 (이미지 + JSON)
     const formData = new FormData();
     formData.append("data", JSON.stringify(requestData));
     images.forEach((img) => formData.append("images", img));
@@ -148,7 +121,10 @@ export default function OOTDForm() {
       const res = await axios.post(`${apiUrl}/api/recommend`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      navigate("/result", { state: res.data });
+
+      // 결과 페이지로 이동
+      // ?? FormData는 새로고침 시 소실될 수 있음(클라이언트 메모리) → 재요청 전용으로만 사용
+      navigate("/result", { state: { ...res.data, requestPayload: formData } });
     } catch (err) {
       console.error("API 요청 오류:", err);
       alert("추천 요청 중 오류가 발생했습니다.");
@@ -166,9 +142,7 @@ export default function OOTDForm() {
           <label className="form-label">위치 선택</label>
           <div className="location-box" onClick={() => setIsModalOpen(true)}>
             <FaMapMarkerAlt className="icon" />
-            <span className="location-label">
-              {location || "위치를 선택해주세요"}
-            </span>
+            <span className="location-label">{location || "위치를 선택해주세요"}</span>
           </div>
         </div>
 
@@ -193,7 +167,7 @@ export default function OOTDForm() {
             </div>
           </div>
 
-          {/* 입력 */}
+          {/* 입력 → 칩/자동완성 */}
           <div
             className="chip-input only-input"
             onFocus={() => setSuggestOpen(true)}
@@ -207,7 +181,6 @@ export default function OOTDForm() {
             />
           </div>
 
-          {/* 자동완성 */}
           {suggestOpen && filteredSuggestions.length > 0 && (
             <ul className="suggest-list">
               {filteredSuggestions.map((s) => (
@@ -228,7 +201,6 @@ export default function OOTDForm() {
             </ul>
           )}
 
-          {/* 선택된 스타일 표시 */}
           {styles.length > 0 && (
             <div className="selected-styles">
               {styles.map((tag, i) => (
@@ -285,14 +257,18 @@ export default function OOTDForm() {
             />
           </div>
 
-          {/* ✅ 미리보기 그리드 */}
+          {/* 미리보기 */}
           {images.length > 0 && (
             <div className="preview-grid">
               {images.map((file, idx) => {
                 const src = URL.createObjectURL(file);
                 return (
                   <div className="preview-box" key={`${file.name}-${idx}`}>
-                    <img src={src} alt={`preview-${idx}`} onLoad={() => URL.revokeObjectURL(src)} />
+                    <img
+                      src={src}
+                      alt={`preview-${idx}`}
+                      onLoad={() => URL.revokeObjectURL(src)}
+                    />
                     <button
                       className="remove-btn"
                       onClick={() => removeImageAt(idx)}
@@ -324,18 +300,9 @@ export default function OOTDForm() {
         <button className="submit-btn" onClick={handleSubmit}>
           추천받기
         </button>
-
-        {/* 테스트 이동 */}
-        <button
-          className="test-btn"
-          onClick={() => navigate("/result")}
-          title="백엔드 연결 전 레이아웃만 확인"
-        >
-          🔍 테스트용 결과 페이지 열기
-        </button>
       </div>
 
-      {/* 모달 */}
+      {/* 위치 선택 모달 */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
