@@ -16,7 +16,7 @@ if project_root not in sys.path:
 
 from recommender.final_recommender import final_recommendation
 from config.config import CLASS_MAPPINGS, MODEL_PATHS
-from AI.yolo_multitask import YOLOv11MultiTask
+from AI.yolo_classification import YOLOv11MultiTask
 
 
 # ========================================
@@ -116,11 +116,16 @@ def main():
     yolo_pt_path = MODEL_PATHS["yolo"]
     num_classes_dict = {task: len(classes) for task, classes in CLASS_MAPPINGS.items()}
     yolo_model = YOLO(yolo_pt_path)
-    model = YOLOv11MultiTask(yolo_model, num_classes_dict).to(device)
+    model = YOLOv11MultiTask(yolo_model)
+    from AI.resnet_multi_classification import FashionAttributePredictor
 
-    image_path = os.path.join(
-        os.path.dirname(__file__), "images", "test2.jpg"  # 테스트 이미지 경로
-    )
+    resnet_model = FashionAttributePredictor(device=device)
+
+    # 프로젝트 루트를 기준으로 테스트 이미지 경로 계산
+    current_dir = os.path.dirname(__file__)  # AI 폴더
+    algorithm_dir = os.path.dirname(current_dir)  # Algorithm 폴더
+    project_root = os.path.dirname(algorithm_dir)  # 프로젝트 루트
+    image_path = os.path.join(project_root, "backend", "test.png")  # 테스트 이미지 경로
     image = cv2.imread(image_path)
     if image is None:
         print(f"이미지 파일을 찾을 수 없습니다: {image_path}")
@@ -142,8 +147,8 @@ def main():
             if "category" in CLASS_MAPPINGS and cls_id < len(CLASS_MAPPINGS["category"])
             else f"cls{cls_id}"
         )
-        # 세부 속성 추출 및 print
-        ai_attributes = model.predict_attributes(crop, CLASS_MAPPINGS, device=device)
+        # 세부 속성 추출 및 print (ResNet 사용)
+        ai_attributes = resnet_model.predict_attributes(crop, CLASS_MAPPINGS)
         print(f"\n[{idx+1}] bbox: {bbox}, conf: {conf:.4f}, cls: {cls_id} ({cls_name})")
         # 주요 속성만 아래쪽에 라벨로 요약
         detail_keys = ["color", "fit", "style", "material", "print", "detail", "collar"]

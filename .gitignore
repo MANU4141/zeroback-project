@@ -20,6 +20,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/frontend/client/build/
 /frontend/client/dist/
 
 # IDEs
@@ -46,8 +47,6 @@ Thumbs.db
 .dockerignore
 
 # AI Models (큰 파일들)
-/backend/models/*.pt
-/backend/models/*.pth
 /backend/models/*.onnx
 
 # 임시 파일들
@@ -55,3 +54,7 @@ psd/
 thumb/
 sketch/
 날씨코드
+
+.pytest_cache
+
+AI/ResNet50_summary/EXP/
