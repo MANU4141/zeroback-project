@@ -121,10 +121,11 @@ def main():
 
     resnet_model = FashionAttributePredictor(device=device)
 
-    image_path = os.path.join(
-        os.path.dirname(__file__),
-        R"D:\zeroback_KHJ_end\zeroback-project\backend\test.png",  # 테스트 이미지 경로
-    )
+    # 프로젝트 루트를 기준으로 테스트 이미지 경로 계산
+    current_dir = os.path.dirname(__file__)  # AI 폴더
+    algorithm_dir = os.path.dirname(current_dir)  # Algorithm 폴더
+    project_root = os.path.dirname(algorithm_dir)  # 프로젝트 루트
+    image_path = os.path.join(project_root, "backend", "test.png")  # 테스트 이미지 경로
     image = cv2.imread(image_path)
     if image is None:
         print(f"이미지 파일을 찾을 수 없습니다: {image_path}")

@@ -144,7 +144,8 @@ export default function OOTDForm() {
     images.forEach((img) => formData.append("images", img));
 
     try {
-      const res = await axios.post("http://127.0.0.1:5000/api/recommend", formData, {
+      const apiUrl = process.env.REACT_APP_API_URL || "http://127.0.0.1:5000";
+      const res = await axios.post(`${apiUrl}/api/recommend`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/result", { state: res.data });

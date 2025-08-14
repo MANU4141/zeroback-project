@@ -27,14 +27,19 @@ warnings.filterwarnings("ignore")
 sys.path.append(os.path.abspath(os.path.join(__file__, "..", "..")))
 
 # 설정 불러오기
-from config.config import CLASS_MAPPINGS
+from config.config import CLASS_MAPPINGS, MODEL_PATHS
+
+# 현재 파일 위치를 기준으로 프로젝트 구조 경로 계산
+current_dir = os.path.dirname(__file__)  # AI 폴더
+algorithm_dir = os.path.dirname(current_dir)  # Algorithm 폴더
+project_root = os.path.dirname(algorithm_dir)  # 프로젝트 루트
 
 # 기본 설정
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-IMAGE_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\images"
-LABEL_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\labels"
-MODEL_PATH = r"D:\zeroback_KHJ_end\zeroback-project\backend\models\YOLOv11_large.pt"
-RESULTS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\YOLOv11_summary\RESULTS"
+IMAGE_DIR = os.path.join(project_root, "backend", "DATA", "images")
+LABEL_DIR = os.path.join(project_root, "backend", "DATA", "labels")
+MODEL_PATH = MODEL_PATHS["yolo"]  # config.py의 동적 경로 사용
+RESULTS_DIR = os.path.join(project_root, "AI", "YOLOv11_summary", "RESULTS")
 
 # 21개 카테고리 정의
 CATEGORIES = CLASS_MAPPINGS["category"]

@@ -3,8 +3,8 @@ from collections import Counter
 import logging
 
 # backend. 모듈 경로 제거 (상대 임포트 사용)
-from weather.recommend_by_weather import recommend_by_weather
-from llm.gemini_prompt_utils import analyze_user_prompt
+from Weather.recommend_by_weather import recommend_by_weather
+from LLM.gemini_prompt_utils import analyze_user_prompt
 
 # 로거 설정
 logger = logging.getLogger(__name__)

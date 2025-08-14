@@ -1,9 +1,15 @@
 # config/config.py
+import os
+
+# 현재 파일의 디렉토리를 기준으로 프로젝트 루트 경로 계산
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(current_dir)  # Algorithm 디렉토리의 상위 디렉토리
+backend_models_dir = os.path.join(project_root, "backend", "models")
 
 # 모델 경로 설정
 MODEL_PATHS = {
-    "yolo": r"D:\end_github_zeroback\zeroback-project\backend\models\YOLOv11_large.pt",
-    "resnet": r"D:\end_github_zeroback\zeroback-project\backend\models\ResNet50_45.pth",
+    "yolo": os.path.join(backend_models_dir, "YOLOv11_large.pt"),
+    "resnet": os.path.join(backend_models_dir, "ResNet50_45.pth"),
 }
 
 # 클래스 매핑

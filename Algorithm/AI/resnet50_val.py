@@ -19,15 +19,20 @@ sys.path.append(os.path.abspath(os.path.join(__file__, "..", "..")))
 # 설정 불러오기
 from config.config import CLASS_MAPPINGS
 
+# 현재 파일 위치를 기준으로 프로젝트 구조 경로 계산
+current_dir = os.path.dirname(__file__)  # AI 폴더
+algorithm_dir = os.path.dirname(current_dir)  # Algorithm 폴더
+project_root = os.path.dirname(algorithm_dir)  # 프로젝트 루트
+
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-IMAGE_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\images"
-LABEL_DIR = r"D:\zeroback_KHJ_end\zeroback-project\backend\DATA\labels"
+IMAGE_DIR = os.path.join(project_root, "backend", "DATA", "images")
+LABEL_DIR = os.path.join(project_root, "backend", "DATA", "labels")
 BATCH_SIZE = 16
 NUM_WORKERS = 0
 
 # 모델 폴더 경로 설정
-MODELS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\ResNet50_summary\EXP"
-RESULTS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\ResNet50_summary\RESULTS"
+MODELS_DIR = os.path.join(project_root, "AI", "ResNet50_summary", "EXP")
+RESULTS_DIR = os.path.join(project_root, "AI", "ResNet50_summary", "RESULTS")
 
 # ✨ 4개 주요 카테고리 정의
 SELECTED_CATEGORIES = ["아우터", "상의", "하의", "원피스"]
@@ -469,15 +474,17 @@ def create_comparison_report(results_dir, results_data):
 
 
 if __name__ == "__main__":
+    # 기본값을 동적 경로로 설정
+    default_models_dir = os.path.join(project_root, "AI", "ResNet50_summary", "EXP")
+    default_results_dir = os.path.join(project_root, "AI", "ResNet50_summary", "RESULTS")
+    
     MODELS_DIR = input("모델 폴더 경로를 입력하세요: ").strip()
     if not MODELS_DIR:
-        MODELS_DIR = r"D:\zeroback_KHJ_end\zeroback-project\AI\ResNet50_summary\EXP"
+        MODELS_DIR = default_models_dir
 
     RESULTS_DIR = input("결과 저장 폴더 경로를 입력하세요 (엔터시 기본값): ").strip()
     if not RESULTS_DIR:
-        RESULTS_DIR = (
-            r"D:\zeroback_KHJ_end\zeroback-project\AI\ResNet50_summary\RESULTS"
-        )
+        RESULTS_DIR = default_results_dir
 
     print(f"모델 폴더: {MODELS_DIR}")
     print(f"결과 저장: {RESULTS_DIR}")
