@@ -64,7 +64,7 @@ python run.py
 ```bash
 cd frontend/client
 npm install
-npm start
+npm run bulid
 ```
 
 
