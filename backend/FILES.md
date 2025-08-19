@@ -1,11 +1,12 @@
 # Backend 파일 구조 및 기능 설명
 
 ## 📁 Root Files
-- `config.py` : 환경 설정 및 모델 경로, API 키, 클래스 매핑 정의
+- `config.py` : 환경 설정 및 모델 경로, API 키, 클래스 매핑, AI 모델 추론 설정 정의
 - `run.py` : Flask 애플리케이션 진입점 및 서버 실행
 - `requirements.txt` : Python 의존성 패키지 목록
 - `Dockerfile` : Docker 이미지 빌드 설정
 - `swagger.yaml` : API 문서 스키마 정의
+- `.env.example` : 환경 변수 설정 예시 파일
 
 ## 📁 app/
 - `__init__.py` : Flask 앱 팩토리 및 초기화 설정
@@ -40,3 +41,5 @@
 ## 📁 tests/
 - `__init__.py` : 테스트 모듈 초기화
 - `test_api.py` : API 엔드포인트 단위 테스트
+
+

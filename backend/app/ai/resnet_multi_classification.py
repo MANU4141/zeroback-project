@@ -79,13 +79,27 @@ class FashionAttributePredictor:
                 ", ".join([f"{k} ({src}->{dst})" for k, src, dst in mismatched]),
             )
 
+        # 체크포인트 로딩 상태 점검
+        if not filtered_state:
+            logging.getLogger(__name__).warning(
+                "체크포인트에서 로드된 파라미터가 없습니다. 모든 레이어가 랜덤 초기화 상태일 수 있습니다."
+            )
+
         missing_after = [k for k in model_state.keys() if k not in filtered_state]
         if missing_after:
-            logging.getLogger(__name__).info(
-                "랜덤 초기화로 유지되는 파라미터: %s",
-                ", ".join(missing_after[:10])
-                + ("..." if len(missing_after) > 10 else ""),
-            )
+            total_params = len(model_state)
+            missing_ratio = len(missing_after) / total_params
+            if missing_ratio > 0.5:  # 50% 이상 누락 시 강한 경고
+                logging.getLogger(__name__).warning(
+                    "랜덤 초기화 파라미터가 전체의 %.1f%%입니다. 모델 성능에 영향을 줄 수 있습니다.",
+                    missing_ratio * 100,
+                )
+            else:
+                logging.getLogger(__name__).info(
+                    "랜덤 초기화 유지 파라미터(일부): %s%s",
+                    ", ".join(missing_after[:10]),
+                    "..." if len(missing_after) > 10 else "",
+                )
 
         self.model.load_state_dict(filtered_state, strict=False)
         self.model.eval()
@@ -112,16 +126,26 @@ class FashionAttributePredictor:
         )
         # numpy array면 PIL.Image로 변환
         if isinstance(crop, np.ndarray):
-            # BGR to RGB 변환 필요시
-            if crop.shape[2] == 3:
-                crop = PILImage.fromarray(crop[..., ::-1])
-            else:
-                crop = PILImage.fromarray(crop)
+            # 그레이스케일(2D) → RGB(3D)
+            if crop.ndim == 2:
+                crop = np.stack([crop] * 3, axis=-1)
+            # RGBA → RGB (알파 채널 제거)
+            elif crop.ndim == 3 and crop.shape[2] == 4:
+                crop = crop[..., :3]
+            # 유효하지 않은 차원 체크
+            if crop.ndim != 3 or crop.shape[2] != 3:
+                raise ValueError("이미지 배열은 HxWx3 형식이어야 합니다.")
+            # BGR → RGB 변환 (OpenCV 기본 포맷 가정)
+            crop = PILImage.fromarray(crop[..., ::-1])
         elif not isinstance(crop, PILImage.Image):
             raise ValueError("crop은 numpy array 또는 PIL.Image여야 합니다.")
         x = self.transform(crop).unsqueeze(0).to(self.device)
         with torch.no_grad():
-            outputs = self.model(x)
+            if self.device.startswith("cuda"):
+                with torch.cuda.amp.autocast():
+                    outputs = self.model(x)
+            else:
+                outputs = self.model(x)
         results = {}
         for attr, logits in outputs.items():
             probs = torch.softmax(logits, dim=1)
@@ -144,7 +168,11 @@ class FashionAttributePredictor:
         img = Image.open(image_path).convert("RGB")
         x = self.transform(img).unsqueeze(0).to(self.device)
         with torch.no_grad():
-            outputs = self.model(x)
+            if self.device.startswith("cuda"):
+                with torch.cuda.amp.autocast():
+                    outputs = self.model(x)
+            else:
+                outputs = self.model(x)
         results = {}
         for attr, logits in outputs.items():
             probs = torch.softmax(logits, dim=1)

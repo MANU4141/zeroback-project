@@ -1,9 +1,37 @@
-# config/config.py
+# backend/config.py
 import os
+import json
+import logging
 from dotenv import load_dotenv
 
 # .env 파일이 있다면 로드합니다.
 load_dotenv()
+
+# 로깅 설정
+logger = logging.getLogger(__name__)
+
+
+def _parse_bool_env(env_var: str, default: bool = False) -> bool:
+    """환경변수를 boolean으로 안전하게 파싱"""
+    value = os.getenv(env_var, str(default)).strip().lower()
+    return value in ("true", "1", "yes", "on")
+
+
+def _parse_int_env(env_var: str, default: int) -> int:
+    """환경변수를 int로 안전하게 파싱"""
+    try:
+        return int(os.getenv(env_var, str(default)))
+    except ValueError:
+        logger.warning(f"환경변수 {env_var} 파싱 실패, 기본값 {default} 사용")
+        return default
+
+
+def _parse_list_env(env_var: str, default: list, separator: str = ",") -> list:
+    """환경변수를 리스트로 안전하게 파싱"""
+    value = os.getenv(env_var)
+    if not value:
+        return default
+    return [item.strip() for item in value.split(separator) if item.strip()]
 
 
 class Config:
@@ -15,14 +43,16 @@ class Config:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
     # --- 모델 경로 ---
+    # AI 추론에 사용되는 학습된 모델 파일들의 경로
     MODEL_PATHS = {
-        "yolo": os.path.join(BASE_DIR, "models", "YOLOv11_large.pt"),
-        "resnet": os.path.join(BASE_DIR, "models", "ResNet50_45.pth"),
+        "yolo": os.path.join(BASE_DIR, "models", "YOLOv11_large.pt"),  # 객체 검출용
+        "resnet": os.path.join(BASE_DIR, "models", "ResNet50.pth"),  # 속성 분류용
     }
 
     # --- 데이터셋 경로 ---
-    IMAGE_DIR = os.path.join(BASE_DIR, "DATA", "images")
-    LABELS_DIR = os.path.join(BASE_DIR, "DATA", "labels")
+    # 추천에 사용되는 이미지 데이터베이스와 라벨 정보
+    IMAGE_DIR = os.path.join(BASE_DIR, "DATA", "images")  # 패션 이미지 저장소
+    LABELS_DIR = os.path.join(BASE_DIR, "DATA", "labels_json")  # 라벨/메타데이터
 
     # --- API 키 ---
     # os.getenv를 사용하여 환경 변수에서 API 키를 가져옵니다.
@@ -30,203 +60,132 @@ class Config:
     WEATHER_API_KEY_DECODE = os.getenv("WEATHER_API_KEY_DECODE")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-    # --- 클래스 매핑 (체크포인트 학습 클래스 순서를 그대로 유지) ---
-    CLASS_MAPPINGS = {
-        "category": [
-            "탑",
-            "블라우스",
-            "티셔츠",
-            "니트웨어",
-            "셔츠",
-            "브라탑",
-            "후드티",
-            "청바지",
-            "팬츠",
-            "스커트",
-            "레깅스",
-            "조거팬츠",
-            "코트",
-            "재킷",
-            "점퍼",
-            "패딩",
-            "베스트",
-            "가디건",
-            "짚업",
-            "드레스",
-            "점프수트",
+    # --- 클래스 매핑 로드 ---
+    @classmethod
+    def _load_class_mappings(cls):
+        """클래스 매핑을 JSON 파일에서 로드합니다."""
+        try:
+            mappings_path = os.path.join(cls.BASE_DIR, "config", "class_mappings.json")
+            with open(mappings_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            # 폴백: 기본 클래스 매핑 제공
+            logger.warning(
+                f"클래스 매핑 파일 로드 실패({mappings_path}): {e}. 기본값을 사용합니다."
+            )
+            return {
+                "category": ["탑", "청바지", "드레스"],
+                "color": ["블랙", "화이트", "블루"],
+                "style": ["캐주얼", "클래식", "모던"],
+            }
+
+    @classmethod
+    def validate_config(cls, strict_mode: bool = False):
+        """설정값의 유효성을 검증합니다.
+
+        Args:
+            strict_mode: True일 경우 중요한 오류 시 시스템 종료
+
+        Returns:
+            list: 발견된 오류 목록
+        """
+        errors = []
+        critical_errors = []
+
+        # 모델 파일 존재 확인
+        for model_name, model_path in cls.MODEL_PATHS.items():
+            if not os.path.exists(model_path):
+                error_msg = f"{model_name} 모델 파일이 존재하지 않습니다: {model_path}"
+                errors.append(error_msg)
+                if model_name in ["yolo", "resnet"]:  # 핵심 모델
+                    critical_errors.append(error_msg)
+
+        # 디렉토리 존재 확인
+        for dir_name, dir_path in [
+            ("IMAGE_DIR", cls.IMAGE_DIR),
+            ("LABELS_DIR", cls.LABELS_DIR),
+        ]:
+            if not os.path.exists(dir_path):
+                error_msg = f"{dir_name} 디렉토리가 존재하지 않습니다: {dir_path}"
+                errors.append(error_msg)
+                if dir_name == "IMAGE_DIR":  # 이미지 디렉토리는 중요
+                    critical_errors.append(error_msg)
+
+        # API 키 확인
+        if not cls.WEATHER_API_KEY_DECODE:
+            errors.append("WEATHER_API_KEY_DECODE가 설정되지 않았습니다.")
+        if not cls.GEMINI_API_KEY:
+            critical_errors.append("GEMINI_API_KEY가 설정되지 않았습니다.")
+
+        # 결과 로깅 및 처리
+        if critical_errors and strict_mode:
+            logger.error(
+                "중요한 설정 오류가 발견되어 시스템을 종료합니다:\n"
+                + "\n".join(f"  - {error}" for error in critical_errors)
+            )
+            raise SystemExit(1)
+
+        if errors:
+            logger.warning(
+                "설정 검증에서 다음 문제가 발견되었습니다:\n"
+                + "\n".join(f"  - {error}" for error in errors)
+            )
+        else:
+            logger.info("설정 검증 완료")
+
+        return errors
+
+    CLASS_MAPPINGS = None  # 나중에 초기화됩니다
+
+    # --- AI 모델 추론 설정 ---
+    AI_MODEL_CONFIG = {
+        "yolo": {
+            "conf_threshold": 0.4,  # 신뢰도 임계값 (낮을수록 더 많은 박스 검출)
+            "iou_threshold": 0.5,  # IoU 임계값 (Non-Maximum Suppression)
+            "max_detections": 4,  # 최대 검출 개수
+        },
+        "resnet": {
+            "batch_size": 32,  # 배치 크기
+            "num_workers": 4,  # 데이터 로더 워커 수
+        },
+    }
+
+    # --- 성능 SLO 설정 ---
+    PERFORMANCE_SLO = {
+        "total_request_ms": 11000,  # 전체 요청 처리 시간 (ms)
+        "yolo_inference_ms": 2500,  # YOLO 추론 시간 (ms)
+        "resnet_inference_ms": 200,  # ResNet 추론 시간 (ms)
+        "weather_api_ms": 1200,  # 날씨 API 호출 시간 (ms)
+        "llm_generation_ms": 8000,  # LLM 생성 시간 (ms)
+        "image_preprocessing_ms": 100,  # 이미지 전처리 시간 (ms)
+    }
+
+    # --- 입력 검증 설정 ---
+    INPUT_VALIDATION = {
+        "max_file_size_mb": 5,  # 최대 파일 크기 (MB)
+        "min_resolution": 224,  # 최소 해상도 (px)
+        "allowed_mimetypes": [  # 정렬된 리스트로 일관성 확보 (프론트/백엔드 동일 값 유지 권장)
+            "image/bmp",
+            "image/gif",
+            "image/jpeg",
+            "image/png",
+            "image/webp",
         ],
-        "color": [
-            "골드",
-            "그레이",
-            "그린",
-            "네온",
-            "네이비",
-            "라벤더",
-            "레드",
-            "민트",
-            "베이지",
-            "브라운",
-            "블랙",
-            "블루",
-            "스카이블루",
-            "실버",
-            "옐로우",
-            "오렌지",
-            "와인",
-            "카키",
-            "퍼플",
-            "핑크",
-            "화이트",
-        ],
-        "sleeve_length": ["7부소매", "긴팔", "민소매", "반팔", "없음", "캡"],
-        "neckline": [
-            "노카라",
-            "라운드넥",
-            "보트넥",
-            "브이넥",
-            "스위트하트",
-            "스퀘어넥",
-            "오프숄더",
-            "원숄더",
-            "유넥",
-            "터틀넥",
-            "홀터넥",
-            "후드",
-        ],
-        "fit": ["노멀", "루즈", "벨보텀", "스키니", "오버사이즈", "와이드", "타이트"],
-        "style": [
-            "레트로",
-            "로맨틱",
-            "리조트",
-            "매니시",
-            "모던",
-            "밀리터리",
-            "섹시",
-            "소피스트케이티드",
-            "스트리트",
-            "스포티",
-            "아방가르드",
-            "오리엔탈",
-            "웨스턴",
-            "젠더리스",
-            "컨트리",
-            "클래식",
-            "키치",
-            "톰보이",
-            "펑크",
-            "페미닌",
-            "프레피",
-            "히피",
-            "힙합",
-        ],
-        "material": [
-            "가죽",
-            "네오프렌",
-            "니트",
-            "데님",
-            "레이스",
-            "린넨",
-            "메시",
-            "무스탕",
-            "벨벳",
-            "비닐/PVC",
-            "스웨이드",
-            "스판덱스",
-            "시퀸/글리터",
-            "시폰",
-            "실크",
-            "우븐",
-            "울/캐시미어",
-            "자카드",
-            "저지",
-            "코듀로이",
-            "트위드",
-            "패딩",
-            "퍼",
-            "플리스",
-            "헤어 니트",
-            "면",
-        ],
-        "print": [
-            "그라데이션",
-            "그래픽",
-            "깅엄",
-            "도트",
-            "레터링",
-            "무지",
-            "믹스",
-            "뱀피",
-            "스트라이프",
-            "아가일",
-            "지그재그",
-            "지브라",
-            "체크",
-            "카무플라쥬",
-            "타이다이",
-            "페이즐리",
-            "플로럴",
-            "하운즈 투스",
-            "하트",
-            "해골",
-            "호피",
-        ],
-        "detail": [
-            "X스트랩",
-            "글리터",
-            "니트꽈베기",
-            "단추",
-            "더블브레스티드",
-            "드롭숄더",
-            "드롭웨이스트",
-            "디스트로이드",
-            "띠",
-            "러플",
-            "레이스",
-            "레이스업",
-            "롤업",
-            "리본",
-            "버클",
-            "비대칭",
-            "비즈",
-            "셔링",
-            "스터드",
-            "스트링",
-            "스티치",
-            "스팽글",
-            "슬릿",
-            "싱글브레스티드",
-            "자수",
-            "지퍼",
-            "체인",
-            "컷아웃",
-            "퀄팅",
-            "태슬",
-            "패치워크",
-            "퍼트리밍",
-            "퍼프",
-            "페플럼",
-            "포켓",
-            "폼폼",
-            "프린지",
-            "프릴",
-            "플레어",
-            "플리츠",
-        ],
-        "collar": [
-            "밴드칼라",
-            "보우칼라",
-            "세일러칼라",
-            "셔츠칼라",
-            "숄칼라",
-            "차이나칼라",
-            "테일러드칼라",
-            "폴로칼라",
-            "피터팬칼라",
-        ],
+        "max_images_per_request": 5,  # 요청당 최대 이미지 수
+        "coordinate_bounds": {  # 좌표 유효 범위 (한국)
+            "lat_min": 33.0,
+            "lat_max": 38.9,
+            "lng_min": 124.0,
+            "lng_max": 132.0,
+        },
     }
 
     # --- CORS 및 Flask 실행 설정 ---
     CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
-    FLASK_RUN_PORT = int(os.getenv("FLASK_RUN_PORT", 5000))
+    FLASK_RUN_PORT = _parse_int_env("FLASK_RUN_PORT", 5000)
     FLASK_RUN_HOST = os.getenv("FLASK_RUN_HOST", "0.0.0.0")
-    FLASK_DEBUG = os.getenv("FLASK_DEBUG", "False").lower() == "true"
+    FLASK_DEBUG = _parse_bool_env("FLASK_DEBUG", False)
+
+
+# 클래스 정의 후 CLASS_MAPPINGS 초기화
+Config.CLASS_MAPPINGS = Config._load_class_mappings()

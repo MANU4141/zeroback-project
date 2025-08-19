@@ -1,6 +1,7 @@
 import requests
 import os
 import math
+import json
 import logging
 from typing import Optional
 from datetime import datetime, timedelta
@@ -9,10 +10,7 @@ from dotenv import load_dotenv
 # .env 파일에서 환경 변수 로드
 load_dotenv()
 
-# 로거 설정
-logging.basicConfig(
-    level=logging.INFO, format="[%(asctime)s] [%(levelname)s] %(message)s"
-)
+# 모듈별 로거 생성 (애플리케이션 레벨 로깅 설정 사용)
 logger = logging.getLogger(__name__)
 
 
@@ -139,22 +137,45 @@ class KoreaWeatherAPI:
             "ny": str(ny),
         }
 
-        try:
-            response = requests.get(self.base_url, params=params, timeout=10)
-            response.raise_for_status()  # 200 OK가 아니면 예외 발생
+        # 재시도 로직 추가
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                logger.info(f"API 호출 시도 {attempt + 1}/{max_retries}")
 
-            data = response.json()
-            header = data.get("response", {}).get("header", {})
+                response = requests.get(self.base_url, params=params, timeout=15)
+                response.raise_for_status()  # 200 OK가 아니면 예외 발생
 
-            if header.get("resultCode") == "00":
-                logger.info("API 호출 성공")
-                return data
-            else:
-                error_msg = header.get("resultMsg", "Unknown API error")
-                raise Exception(f"API Error: {error_msg}")
-        except requests.exceptions.RequestException as e:
-            logger.error(f"API 요청 실패: {e}")
-            raise
+                # 응답 내용 검증
+                if not response.text or not response.text.strip():
+                    raise ValueError("빈 응답 수신")
+
+                if not response.text.strip().startswith("{"):
+                    raise ValueError(f"올바르지 않은 응답 형식: {response.text[:100]}")
+
+                data = response.json()
+                header = data.get("response", {}).get("header", {})
+
+                if header.get("resultCode") == "00":
+                    logger.info("API 호출 성공")
+                    return data
+                else:
+                    error_msg = header.get("resultMsg", "Unknown API error")
+                    raise Exception(f"API Error: {error_msg}")
+
+            except (
+                requests.exceptions.RequestException,
+                ValueError,
+                json.JSONDecodeError,
+            ) as e:
+                logger.warning(f"API 호출 시도 {attempt + 1} 실패: {e}")
+                if attempt == max_retries - 1:
+                    logger.error(f"모든 재시도 실패: {e}")
+                    raise
+                else:
+                    import time
+
+                    time.sleep(1)  # 1초 대기 후 재시도
 
     def _parse_weather_data(self, data: dict) -> dict:
         """API 응답 데이터를 파싱하여 필요한 날씨 정보만 추출합니다."""

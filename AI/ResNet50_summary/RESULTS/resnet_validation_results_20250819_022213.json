@@ -1,0 +1,2098 @@
+{
+  "metadata": {
+    "timestamp": "20250819_022213",
+    "total_models": 13,
+    "categories": [
+      "아우터",
+      "상의",
+      "하의",
+      "원피스"
+    ],
+    "data_source": "JSON files only (optimized)",
+    "pytorch_device": "cuda"
+  },
+  "model_results": {
+    "epoch_10": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8925481677114382,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.7408519206565946,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.8006879729532684,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.47758288783933306,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.3672297320316481,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.736944292757821,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.6873057820732239,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.6527388275044776,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.5161841891437636,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.818654185320852,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.9600415923945336,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.5841076267905536,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.7690298507462687,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.6469437050182393,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.5938494838494839,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.5611688311688312,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6323426650296456,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.5791666666666666,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.7960403726708075,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.6762533762533763,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.7887681159420289,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.5920517632340293,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.7612765238719438,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.7516178028906362,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.3884839650145772,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.5678182014175224,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.7966008771929824,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.7522917441871559,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8967741935483872,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.5493869936034115,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.3147352164743469,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.42975033352391845,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.3742063492063492,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.5287783853573327,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.7730158730158729,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7542483660130719,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_15": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8624489596435913,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.8337356409230434,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.8535680665165405,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.6732020463838497,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.6607443272386847,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.8382005950761979,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7866161616161617,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.841869927166504,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7133391074700958,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8307466196355086,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.7651901070505722,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.6986638361638362,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.8121160731109854,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8441390493564407,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.6477477477477477,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.835836038961039,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6951987812668928,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.47280701754385956,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8203223982058486,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7039164190107586,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.600934331369114,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.6877107206518972,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.8922671660066196,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8580974580974581,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.5093105899076049,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8700062900062899,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.8253968253968255,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9414839546418493,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8967741935483872,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.8554667437082691,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.7754184221575525,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.6971815219474794,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.4655850540806293,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6436507936507937,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.9396825396825398,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.5899621212121212,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_20": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8795095880293983,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.7926889133811046,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.8924359142407884,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.6926776227418567,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.7123198226549323,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.7953919024302938,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7334605747396445,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8451855828510685,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7126985249348698,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8777076832632388,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.6069444444444444,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.7091076267905536,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.8603492552645096,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.7576339041363671,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7997995831329165,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.7698994252873563,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6695279866332497,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.5791666666666666,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8458691635162224,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7442528735632185,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.7801834181144526,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.7431970127069946,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9146896996133638,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.7952893837382738,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.5093105899076049,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8771784511784512,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.7611111111111111,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9051347203521117,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8967741935483872,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6424755799755799,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.829004329004329,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.6484324527802788,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.6637168141592921,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.606743548848812,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.5142857142857143,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7474747474747475,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_25": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8938152036314067,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.8603136031240607,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9291513169647097,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.7603988560786514,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.7107333803135969,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9098539234937778,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7102293192841772,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8821544014974726,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7224984273172504,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8061728395061727,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.7444257703081232,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.7111638361638362,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9310862865947612,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8509575894191279,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7797314921365555,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.820941091954023,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.7181736392262708,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.5791666666666666,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8207434767056743,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.8073440962329852,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.9097266851742555,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.9056581709145426,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.8897362902797686,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8693149072125878,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.5424088601753576,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8536639642408873,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.8253968253968255,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9172313797313798,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.9317333333333334,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6451067789968652,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.7699040090344438,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.6230486685032139,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.4955357142857143,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.5530522387665245,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.923529411764706,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7364705882352941,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_30": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8912728650828134,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.8865385037569874,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9044694939336075,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.799157364424802,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.638533481768776,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9177953745600804,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7771195097037794,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8601938552787934,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7093745398789197,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8236667166491728,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.8996894409937888,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.7047535797535798,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9310862865947612,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8585655890003715,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7979487179487179,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.820941091954023,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.7118784895874679,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.7579365079365079,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8786071238509295,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7654526008979151,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.9031990231990232,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.6270655270655272,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9432226848375918,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8792403944886215,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.546,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8325606674027726,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.8253968253968255,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9356504765257626,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.9317333333333334,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.4753169064235864,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.7630466714048804,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.5942854263253377,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.6637168141592921,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6386878553545221,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.7619047619047619,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7945945945945946,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_35": {
+      "상의": {
+        "color": {
+          "f1_score": 0.9083179467583131,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.9077664170171885,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.7984269569896923,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.7478863856006709,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.7233583048712469,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9148539163242949,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7529853105695802,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8574852375052086,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7315589387346412,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8504093567251462,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.7537615356220007,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.6878968253968254,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.8261233019853709,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8161893661893663,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7535464535464536,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.8052162725555339,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.7307319223985891,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.5791666666666666,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8735684813271021,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7209325396825398,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.6594453165881736,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.9093886121954503,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9173649762935477,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8827823691460055,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.546,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8897287157287158,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.8253968253968255,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9387884516916775,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8284552845528456,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6749791608780217,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.6863945578231292,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.5534294068504595,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.4955357142857143,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6026373626373627,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.9396825396825398,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7364705882352941,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_40": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8922332515187316,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.8904782314332728,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.7963870077859253,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.7657695255789455,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.6526935446132563,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.7799928065540278,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7595039542713962,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8820136979433564,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.7251131114210205,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8245330800886356,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.7432900432900433,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.6432098765432098,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9310862865947612,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.903800413112154,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.741175315912158,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.835836038961039,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6346683072689264,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.8185185185185184,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8046970862917637,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7442528735632185,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.7333333333333333,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.7618230625583567,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9097258245550172,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.7561564361564362,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.5747627024008933,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8833896569380439,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.8253968253968255,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.8980006105006104,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8284552845528456,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.663804945054945,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.8268865121806298,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.5750554323725056,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.4955357142857143,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6823594705947646,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.7619047619047619,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7002777777777778,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_45": {
+      "상의": {
+        "color": {
+          "f1_score": 0.8942640349830717,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.9035282588911433,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9328036884107543,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.8138910651194445,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.6406937014441259,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.8193524657161021,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7801316513460441,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8009225580184228,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.6998307508143378,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8862614751503641,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.9380718954248366,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.7102592529421798,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9309188550285216,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8584348984348986,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7424708624708625,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.820941091954023,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6710803167420815,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.8833333333333333,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8058129306253374,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.724672187715666,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.8883842083842083,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.7292215292215293,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9381639877989032,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8656200701655248,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.5747627024008933,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.9264175824175824,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.7611111111111111,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9033119658119658,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.7951219512195121,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6474358974358975,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.8423395445134576,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.6992149564242587,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.6637168141592921,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6228026359605306,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.7290849673202615,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7364705882352941,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_5": {
+      "상의": {
+        "color": {
+          "f1_score": 0.6884384702417702,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.609982156415876,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.4002689454900805,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.31535973487838526,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.25031231278118354,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.463209691941604,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.5391430646332607,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.48726840057903903,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.28179962495383537,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.6466969849322791,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.6297049441786284,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.44375,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.4847488584474886,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.25985231699517414,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.4080746489283075,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.5844953852327448,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.2766694090223502,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.94541910331384,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.45566874464389995,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.4515669515669516,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.6037698412698412,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.24786623333232086,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.2884864872800551,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.2584716162141388,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.2492220650636492,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.3450014333492594,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.7683078664402943,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.5283742482500247,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.6301075268817204,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.34393939393939393,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.16182230467944755,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.3464462163852408,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.5746376811594204,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.16288939818351583,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.6846405228758169,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.5466666666666666,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_50": {
+      "상의": {
+        "color": {
+          "f1_score": 0.9068537451785145,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.914840516965218,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9241036772307902,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.7352574204735425,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.7053009034066394,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9114478587561239,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7761334587177284,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.8822063963531346,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.6946721836946079,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8334680134680136,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.6326319675156885,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.8336385836385836,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9223774244996655,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.8274410774410773,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.7430692114902641,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.7686887254901961,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.6606701940035273,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.94541910331384,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.8879252527171215,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.7370727432077125,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.744973544973545,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.7705517416730232,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9352805538691449,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.9046959242756024,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.546,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.8646365914786968,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 0.811290322580645,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.8970933989609711,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.7285333333333333,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6293202764976958,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.8342627960275019,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.5667664287664288,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.6304112554112554,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.5596520146520148,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 0.8990842490842491,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7074747474747476,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_55": {
+      "상의": {
+        "color": {
+          "f1_score": 0.9728236157798273,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.9620315215411338,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.981164110121704,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.891485799837706,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.9259520209435556,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9389520827469744,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.7653993516062482,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.9559011364641983,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.9605962867820413,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.8937796981140634,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.9861003861003861,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 1.0,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.947894196199281,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.9896625114016419,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.8994254867939079,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 1.0,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.9285714285714286,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.9856139284056904,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.9365079365079366,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 1.0,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.7900533669125144,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9765437958128987,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.9385108653958407,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.9128978224455612,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.9885714285714287,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9611070946597263,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8634408602150536,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.9344086021505377,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.8059903381642513,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.8010955710955712,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.3945945945945946,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.7811830145163479,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.619047619047619,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_60_best": {
+      "상의": {
+        "color": {
+          "f1_score": 0.9605337863000756,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.9655387246484567,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9186495455731046,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.8900459193544361,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.89158930170467,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9489438954183917,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.8804569563443493,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.9782361896956641,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.9142106128474625,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.9758672699849171,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.9861003861003861,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 0.9552845528455285,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9562275295326143,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.9645484949832777,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.943011583011583,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 1.0,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.873144399460189,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 0.94541910331384,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.9533999823770904,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.990205575287913,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.9640211640211639,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.9838636363636365,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 0.9481074481074482,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.9756065049320181,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 1.0,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 1.0,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9437261268143622,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.7301587301587301,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.6726490972875845,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.7870439084724798,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.6685102254067771,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.6637168141592921,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.7136918636918637,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.788888888888889,
+          "total_labels": 29
+        }
+      }
+    },
+    "epoch_65": {
+      "상의": {
+        "color": {
+          "f1_score": 0.9877512069650142,
+          "total_labels": 424
+        },
+        "sleeve_length": {
+          "f1_score": 0.9752729180584314,
+          "total_labels": 412
+        },
+        "fit": {
+          "f1_score": 0.9247913680256915,
+          "total_labels": 427
+        },
+        "style": {
+          "f1_score": 0.9450462140972059,
+          "total_labels": 428
+        },
+        "material": {
+          "f1_score": 0.8895071338619726,
+          "total_labels": 426
+        },
+        "print": {
+          "f1_score": 0.9653033959504548,
+          "total_labels": 385
+        },
+        "collar": {
+          "f1_score": 0.8876117496807152,
+          "total_labels": 87
+        },
+        "neckline": {
+          "f1_score": 0.9603356855947212,
+          "total_labels": 338
+        },
+        "detail": {
+          "f1_score": 0.8781293525405743,
+          "total_labels": 280
+        }
+      },
+      "원피스": {
+        "color": {
+          "f1_score": 0.9704183535762484,
+          "total_labels": 65
+        },
+        "sleeve_length": {
+          "f1_score": 0.9721362229102167,
+          "total_labels": 65
+        },
+        "neckline": {
+          "f1_score": 1.0,
+          "total_labels": 45
+        },
+        "fit": {
+          "f1_score": 0.9647021058038008,
+          "total_labels": 66
+        },
+        "style": {
+          "f1_score": 0.9932600732600734,
+          "total_labels": 66
+        },
+        "material": {
+          "f1_score": 0.974021978021978,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 1.0,
+          "total_labels": 63
+        },
+        "detail": {
+          "f1_score": 0.9924585218702866,
+          "total_labels": 49
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 16
+        }
+      },
+      "하의": {
+        "color": {
+          "f1_score": 0.9559243197687134,
+          "total_labels": 116
+        },
+        "sleeve_length": {
+          "f1_score": 0.9336399942946798,
+          "total_labels": 115
+        },
+        "neckline": {
+          "f1_score": 0.9855900621118012,
+          "total_labels": 58
+        },
+        "fit": {
+          "f1_score": 0.971173669467787,
+          "total_labels": 117
+        },
+        "style": {
+          "f1_score": 1.0,
+          "total_labels": 117
+        },
+        "material": {
+          "f1_score": 0.8200996136480008,
+          "total_labels": 116
+        },
+        "print": {
+          "f1_score": 0.9709659408151871,
+          "total_labels": 106
+        },
+        "detail": {
+          "f1_score": 0.9896470588235294,
+          "total_labels": 79
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 30
+        }
+      },
+      "아우터": {
+        "color": {
+          "f1_score": 0.9338795402362765,
+          "total_labels": 67
+        },
+        "sleeve_length": {
+          "f1_score": 0.8634408602150536,
+          "total_labels": 67
+        },
+        "fit": {
+          "f1_score": 0.9116575591985429,
+          "total_labels": 67
+        },
+        "style": {
+          "f1_score": 0.8465807375581811,
+          "total_labels": 67
+        },
+        "material": {
+          "f1_score": 0.637503959455179,
+          "total_labels": 66
+        },
+        "print": {
+          "f1_score": 0.4955357142857143,
+          "total_labels": 62
+        },
+        "detail": {
+          "f1_score": 0.6993820993820994,
+          "total_labels": 53
+        },
+        "collar": {
+          "f1_score": 1.0,
+          "total_labels": 29
+        },
+        "neckline": {
+          "f1_score": 0.7828571428571428,
+          "total_labels": 29
+        }
+      }
+    }
+  },
+  "summary": {
+    "epoch_10": {
+      "average_f1": 0.6530410231409554,
+      "std_f1": 0.16112127376683885,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_15": {
+      "average_f1": 0.7566482679487109,
+      "std_f1": 0.1254708877098615,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_20": {
+      "average_f1": 0.7531008007083946,
+      "std_f1": 0.10903384138187142,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_25": {
+      "average_f1": 0.7872381400740278,
+      "std_f1": 0.1218304145651892,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_30": {
+      "average_f1": 0.790294530443673,
+      "std_f1": 0.11924598133304093,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_35": {
+      "average_f1": 0.7729628338458944,
+      "std_f1": 0.12009311390512611,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_40": {
+      "average_f1": 0.7679478144952172,
+      "std_f1": 0.10492072023450137,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_45": {
+      "average_f1": 0.7939126607540493,
+      "std_f1": 0.10279217370964655,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_5": {
+      "average_f1": 0.45452997919854177,
+      "std_f1": 0.18280623046740585,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_50": {
+      "average_f1": 0.7853679343505792,
+      "std_f1": 0.11770292179790791,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_55": {
+      "average_f1": 0.9080362908749908,
+      "std_f1": 0.12290043716713724,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_60_best": {
+      "average_f1": 0.9092055060302278,
+      "std_f1": 0.103446996453387,
+      "total_attributes": 36,
+      "total_labels": 5069
+    },
+    "epoch_65": {
+      "average_f1": 0.9188506820093131,
+      "std_f1": 0.1117375947319445,
+      "total_attributes": 36,
+      "total_labels": 5069
+    }
+  }
+}
