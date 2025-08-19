@@ -115,11 +115,3 @@ def finalize_timing_context(
     context: TimingContext, total_operation_name: str = "total_request"
 ):
     return context.finalize(total_operation_name)
-
-
-def check_performance_slo(timings=None):
-    """
-    SLO 체크는 프로토타입에서는 제거.
-    호환성 유지용으로 항상 빈 리스트 반환.
-    """
-    return []

@@ -140,11 +140,14 @@ class FashionAttributePredictor:
         elif not isinstance(crop, PILImage.Image):
             raise ValueError("crop은 numpy array 또는 PIL.Image여야 합니다.")
         x = self.transform(crop).unsqueeze(0).to(self.device)
+        from contextlib import nullcontext
+
         with torch.no_grad():
             if self.device.startswith("cuda"):
-                with torch.cuda.amp.autocast():
-                    outputs = self.model(x)
+                ctx = torch.amp.autocast("cuda")
             else:
+                ctx = nullcontext()
+            with ctx:
                 outputs = self.model(x)
         results = {}
         for attr, logits in outputs.items():
@@ -167,11 +170,14 @@ class FashionAttributePredictor:
         """
         img = Image.open(image_path).convert("RGB")
         x = self.transform(img).unsqueeze(0).to(self.device)
+        from contextlib import nullcontext
+
         with torch.no_grad():
             if self.device.startswith("cuda"):
-                with torch.cuda.amp.autocast():
-                    outputs = self.model(x)
+                ctx = torch.amp.autocast("cuda")
             else:
+                ctx = nullcontext()
+            with ctx:
                 outputs = self.model(x)
         results = {}
         for attr, logits in outputs.items():

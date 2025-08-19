@@ -150,16 +150,6 @@ class Config:
         },
     }
 
-    # --- 성능 SLO 설정 ---
-    PERFORMANCE_SLO = {
-        "total_request_ms": 11000,  # 전체 요청 처리 시간 (ms)
-        "yolo_inference_ms": 2500,  # YOLO 추론 시간 (ms)
-        "resnet_inference_ms": 200,  # ResNet 추론 시간 (ms)
-        "weather_api_ms": 1200,  # 날씨 API 호출 시간 (ms)
-        "llm_generation_ms": 8000,  # LLM 생성 시간 (ms)
-        "image_preprocessing_ms": 100,  # 이미지 전처리 시간 (ms)
-    }
-
     # --- 입력 검증 설정 ---
     INPUT_VALIDATION = {
         "max_file_size_mb": 5,  # 최대 파일 크기 (MB)

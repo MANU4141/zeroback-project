@@ -228,6 +228,9 @@ class BackendPrototypeTester:
             from app.services import get_weather_info
 
             weather_info, is_fallback = get_weather_info(latitude, longitude)
+            # source 필드 추가
+            weather_info = dict(weather_info)  # 복사
+            weather_info["source"] = "Fallback" if is_fallback else "API"
 
             return {
                 "success": True,
@@ -492,11 +495,10 @@ class BackendPrototypeTester:
         print(f"   Weather API: {'✅' if weather_test.get('success') else '❌'}")
         if weather_test.get("success"):
             weather_info = weather_test.get("weather_info", {})
-            is_fallback = weather_test.get("is_fallback", False)
             print(
                 f"      → {weather_info.get('temperature', 'N/A')}°C, {weather_info.get('condition', 'N/A')}"
             )
-            print(f"      → Source: {'Fallback' if is_fallback else 'API'}")
+            print(f"      → Source: {weather_info.get('source', 'N/A')}")
 
         # 추천 테스트
         rec_test = test_res.get("recommendation", {})

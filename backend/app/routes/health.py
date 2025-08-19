@@ -14,7 +14,7 @@ from flasgger import swag_from
 from app.schemas import health_check_schema
 from app.services import get_ai_model_status
 from app.error_codes import AIErrorCodes, create_error_response
-from app.monitoring import performance_monitor, check_performance_slo
+from app.monitoring import performance_monitor
 
 
 def register_health_routes(app):
@@ -100,7 +100,6 @@ def _get_performance_info():
     """성능 정보를 수집합니다."""
     return {
         "metrics": performance_monitor.get_summary(),
-        "slo_violations": check_performance_slo(),
     }
 
 
@@ -108,9 +107,6 @@ def _determine_overall_status(model_status, performance_info):
     """전체 시스템 상태를 판단합니다."""
     if not model_status.get("models_initialized", False):
         return "ERROR"
-
-    if performance_info.get("slo_violations"):
-        return "WARNING"
 
     if current_app.config.get("INITIALIZATION_ERROR"):
         return "WARNING"
