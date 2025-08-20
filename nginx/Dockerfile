@@ -1,18 +1,12 @@
-# Nginx Dockerfile for Frontend Serving
+# Nginx Dockerfile for Frontend Serving (Simple Copy)
+# 이 Dockerfile은 로컬에서 'npm run build'를 먼저 실행하여 'frontend/client/build' 디렉토리가 생성된 상태를 가정합니다.
 FROM nginx:alpine
 
-# 기본 설정 파일 제거
-RUN rm /etc/nginx/conf.d/default.conf
-
-# 커스텀 설정 파일만 복사
+# 커스텀 Nginx 설정 파일 복사
 COPY nginx/frontend.conf /etc/nginx/conf.d/default.conf
 
-# React 빌드 파일 복사
+# 로컬에서 빌드된 React 정적 파일들을 Nginx 웹 루트로 복사
 COPY frontend/client/build /usr/share/nginx/html
-
-# 권한 설정
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
-    chmod -R 755 /usr/share/nginx/html
 
 # curl 설치 (헬스체크용)
 RUN apk add --no-cache curl

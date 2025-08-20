@@ -1,5 +1,9 @@
 version: '3.8'
 
+# GCP 배포 환경에 최적화된 설정
+# 로컬 개발용 볼륨 마운트를 제거하고, 빌드 시점에 모든 파일을 이미지에 포함시키는 것을 전제로 합니다.
+# 민감한 정보(.env)는 GCP Secret Manager 또는 해당 서비스의 환경 변수 설정을 통해 주입해야 합니다.
+
 services:
   # Frontend
   frontend:
@@ -9,20 +13,16 @@ services:
     container_name: zeroback-frontend
     ports:
       - "80:80"
-      - "443:443"  # HTTPS -> 일단 필요하진 않음
     volumes:
-      # 개발 실시간 업데이트 볼륨
-      - ./frontend/client/build:/usr/share/nginx/html:ro
-      - ./nginx/frontend.conf:/etc/nginx/conf.d/default.conf:ro
-      # 로그 볼륨
+      # 프로덕션에서는 로컬 볼륨 마운트를 사용하지 않습니다.
+      # Nginx 설정 파일과 빌드된 React 앱은 Dockerfile에서 COPY 명령어로 이미지에 포함되어야 합니다.
+      # 로그 볼륨은 유지합니다.
       - nginx-logs:/var/log/nginx
     depends_on:
       - backend
     networks:
       - zeroback-network
     restart: unless-stopped
-    environment:
-      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
@@ -38,17 +38,14 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      # 개발 시 코드 변경사항 반영
-      - ./backend:/app:ro
+      # 프로덕션에서는 소스 코드, 모델, 데이터를 직접 마운트하지 않습니다.
+      # Dockerfile에서 COPY 명령어를 사용하여 이미지에 모두 포함시켜야 합니다.
       - backend-logs:/app/logs
-      # AI 모델과 데이터 볼륨 (읽기 전용)
-      - ./backend/models:/app/models:ro
-      - ./backend/DATA:/app/DATA:ro
     networks:
       - zeroback-network
     restart: unless-stopped
-    env_file:
-      - .env
+    # env_file은 프로덕션에서 사용하지 않습니다.
+    # 아래 환경 변수와 API 키들은 GCP 환경(Secret Manager, Cloud Run 환경 변수 등)에서 직접 설정해야 합니다.
     environment:
       - FLASK_ENV=production
       - FLASK_APP=run.py
@@ -56,12 +53,10 @@ services:
       - FLASK_RUN_HOST=0.0.0.0
       - FLASK_RUN_PORT=5000
       - FLASK_DEBUG=false
-      # CORS 설정
-      - CORS_ORIGINS=*
-      # API 키들은 .env 파일이나 환경변수로 설정하세요
-      # - WEATHER_API_KEY_ENCODE=your_weather_api_key_encode
-      # - WEATHER_API_KEY_DECODE=your_weather_api_key_decode  
-      # - GEMINI_API_KEY=your_gemini_api_key
+      - CORS_ORIGINS=* # 프로덕션에서는 실제 프론트엔드 도메인으로 제한하는 것이 안전합니다.
+      # - WEATHER_API_KEY_ENCODE=...
+      # - WEATHER_API_KEY_DECODE=...
+      # - GEMINI_API_KEY=...
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
       interval: 30s
@@ -69,13 +64,10 @@ services:
       retries: 3
       start_period: 60s
 
-# 네트워크 설정
+# 네트워크 설정 (고정 IP 대역 제거)
 networks:
   zeroback-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16
 
 # 볼륨 설정
 volumes:

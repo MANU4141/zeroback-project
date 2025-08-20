@@ -1,0 +1,6 @@
+# docker-compose.override.yml
+version: '3.8'
+services:
+  backend:
+    env_file:
+      - ./backend/.env
