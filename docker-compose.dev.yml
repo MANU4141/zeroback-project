@@ -23,12 +23,7 @@ services:
       - PYTHONPATH=/app
       - FLASK_RUN_HOST=0.0.0.0
       - FLASK_RUN_PORT=5000
-      # CORS 설정 (개발환경에서는 모든 origin 허용)
       - CORS_ORIGINS=*
-      # 개발용 API 키들 (실제 키로 교체하거나 .env 파일 사용)
-      # - WEATHER_API_KEY_ENCODE=your_weather_api_key_encode
-      # - WEATHER_API_KEY_DECODE=your_weather_api_key_decode
-      # - GEMINI_API_KEY=your_gemini_api_key
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]

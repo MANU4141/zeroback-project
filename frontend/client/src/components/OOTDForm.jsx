@@ -124,7 +124,7 @@ export default function OOTDForm() {
 
       // 결과 페이지로 이동
       // ?? FormData는 새로고침 시 소실될 수 있음(클라이언트 메모리) → 재요청 전용으로만 사용
-      navigate("/result", { state: { ...res.data, requestPayload: formData } });
+      navigate("/result", { state: { ...res.data, requestPayload: requestData } });
     } catch (err) {
       console.error("API 요청 오류:", err);
       alert("추천 요청 중 오류가 발생했습니다.");

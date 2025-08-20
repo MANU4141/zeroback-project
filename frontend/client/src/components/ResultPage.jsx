@@ -80,11 +80,13 @@ export default function ResultPage() {
 
     try {
       setLoading(true);
-      const res = await axios.post(`${API_BASE}/api/recommend`, requestPayload, {
-        headers:
-          requestPayload instanceof FormData
-            ? { "Content-Type": "multipart/form-data" }
-            : { "Content-Type": "application/json" },
+
+      // 재요청 시에도 FormData 사용 (이미지는 없음)
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(requestPayload));
+
+      const res = await axios.post(`${API_BASE}/api/recommend`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
       const r = res.data || {};
       setData({
