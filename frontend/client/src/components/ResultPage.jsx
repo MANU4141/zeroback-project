@@ -3,6 +3,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/ResultPage.css";
+import {
+  FaMapMarkerAlt,
+  FaSun,
+  FaCloud,
+  FaCloudRain,
+  FaSnowflake,
+  FaChevronLeft,
+  FaChevronRight,
+  FaArrowLeft,
+  FaLightbulb,
+} from "react-icons/fa";
 
 /**
  * ResultPage
@@ -38,8 +49,8 @@ export default function ResultPage() {
   const requestPayload = state?.requestPayload ?? null;
 
   const [data, setData] = useState(() => ({
-    location: state?.location ?? "",
-    weather: state?.weather ?? {},                // {description, temp, humidity, wind}
+    location: state?.location ?? state?.requestPayload?.location ?? "",
+    weather: state?.weather ?? {}, // {description, temp, humidity, wind}
     recommended_images: normalizeImages(state?.recommended_images ?? []),
     styling_tip: state?.styling_tip ?? "",
   }));
@@ -66,11 +77,11 @@ export default function ResultPage() {
 
   const icon = (d) => {
     const s = String(d || "").toLowerCase();
-    if (s.includes("rain") || s.includes("비")) return "??";
-    if (s.includes("snow") || s.includes("눈")) return "??";
-    if (s.includes("cloud") || s.includes("구름")) return "??";
-    if (s.includes("맑") || s.includes("clear")) return "??";
-    return "??";
+    if (s.includes("rain") || s.includes("비")) return <FaCloudRain />;
+    if (s.includes("snow") || s.includes("눈")) return <FaSnowflake />;
+    if (s.includes("cloud") || s.includes("구름") || s.includes("흐림")) return <FaCloud />;
+    if (s.includes("맑") || s.includes("clear")) return <FaSun />;
+    return <FaSun />;
   };
 
   // 다시 받기
@@ -120,18 +131,23 @@ export default function ResultPage() {
 
         {/* 위치 */}
         <div className="result-sub">
-          <div className="pin">?</div>
+          <div className="pin">
+            <FaMapMarkerAlt />
+          </div>
           <div className="where">{location || "위치 미지정"}</div>
         </div>
 
         {/* 날씨 */}
         <div className="weather-chip">
           <div className="weather-left">
-            <span className="w-emoji">{icon(weather?.description)}</span>
+            <span className="w-emoji">{icon(weather?.condition)}</span>
             <div className="w-main">
-              <div className="w-desc">{weather?.description ?? "-"}</div>
+              <div className="w-desc">{weather?.condition ?? "-"}</div>
               <div className="w-temp">
-                {weather?.temp !== undefined && weather?.temp !== null ? weather.temp : "-"}°C
+                {weather?.temperature !== undefined && weather?.temperature !== null
+                  ? weather.temperature
+                  : "-"}
+                °C
               </div>
             </div>
           </div>
@@ -144,7 +160,11 @@ export default function ResultPage() {
               %
             </div>
             <div className="w-meta">
-              바람: {weather?.wind !== undefined && weather?.wind !== null ? weather.wind : "-"} m/s
+              바람:{" "}
+              {weather?.wind_speed !== undefined && weather?.wind_speed !== null
+                ? weather.wind_speed
+                : "-"}{" "}
+              m/s
             </div>
           </div>
         </div>
@@ -154,7 +174,7 @@ export default function ResultPage() {
           {hasImages ? (
             <>
               <button className="nav-btn left" onClick={prev} aria-label="previous">
-                ?
+                <FaChevronLeft />
               </button>
               <div className="hero">
                 <img src={heroSrc} alt={`추천 ${index + 1}`} className="hero-img" />
@@ -163,7 +183,7 @@ export default function ResultPage() {
                 </div>
               </div>
               <button className="nav-btn right" onClick={next} aria-label="next">
-                ?
+                <FaChevronRight />
               </button>
             </>
           ) : (
@@ -193,13 +213,15 @@ export default function ResultPage() {
         {/* 스타일링 팁 */}
         {styling_tip && (
           <div className="tip-card">
-            <div className="tip-title">? 스타일링 팁</div>
+            <div className="tip-title">
+              <FaLightbulb /> 스타일링 팁
+            </div>
             <p className="tip-body">{styling_tip}</p>
           </div>
         )}
 
         <button className="back-btn" onClick={() => navigate("/")}>
-          ? 뒤로가기
+          <FaArrowLeft /> 뒤로가기
         </button>
       </div>
     </div>

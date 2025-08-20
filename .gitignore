@@ -21,7 +21,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 /frontend/client/build/
+/frontend/client/build/node_modules
 /frontend/client/dist/
+/frontend/client/node_modules/
 
 # IDEs
 .vscode/
