@@ -69,8 +69,18 @@ def _score_image(
     if isinstance(label_categories, str):
         label_categories = [label_categories]
 
-    # targets 딕셔너리에 있는 모든 키를 순회하여 점수를 계산
-    for key in targets.keys():
+    for key in (
+        "category",
+        "color",
+        "sleeve_length",
+        "neckline",
+        "fit",
+        "style",
+        "material",
+        "print",
+        "detail",
+        "collar",
+    ):
         vals = label.get(key, "")
         if not vals:
             continue
@@ -91,7 +101,7 @@ def _score_image(
         inter = label_set & target_set
         if inter:
             base_weight = {
-                "category": 10,  # 카테고리 매칭 최우선
+                "category": 15,  # 카테고리 매칭 최우선
                 "style": 4,  # 스타일 매칭
                 "color": 3,  # 색상 매칭
                 "detail": 2,  # 디테일 매칭
@@ -101,9 +111,7 @@ def _score_image(
                 "neckline": 1.5,  # 넥라인 매칭
                 "sleeve_length": 1.5,  # 소매길이 매칭
                 "collar": 1,  # 칼라 매칭
-            }.get(
-                key, 1
-            )  # 정의되지 않은 다른 속성은 가중치 1로 처리
+            }.get(key, 1)
 
             # 사용자 스타일 선호도 관련 속성에 추가 가중치 부여
             if key in ["style", "color", "detail", "print"] and user_style_weight > 1.0:
