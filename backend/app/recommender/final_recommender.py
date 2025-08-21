@@ -127,13 +127,38 @@ def final_recommendation(
 
             genai.configure(api_key=gemini_api_key)
             model = genai.GenerativeModel("gemini-1.5-flash")
+            
+            # LLM 프롬프트를 더 명확하고 구체적으로 수정
             llm_prompt = f"""
-오늘의 날씨: {weather.get('temperature', '')}°C, {weather.get('condition', '')}
-사용자 요청: {prompt_info.get('cleaned_request', user_prompt)}
-추천 속성: {', '.join(categories[:3])}, {', '.join(materials[:2])}, {', '.join(colors[:2])}
+아래 정보를 바탕으로 스타일링 팁을 추천해주세요.
+[정보]
+- 날씨: {weather.get('temperature', '')}°C, {weather.get('condition', '')}
+- 사용자 요청: {prompt_info.get('cleaned_request', user_prompt)}
+- 추천 키워드: {', '.join(categories[:3])}, {', '.join(materials[:2])}, {', '.join(colors[:2])}
+[규칙]
+- 반드시 한글로, 자연스러운 문장으로 작성해주세요.
+- 전체 분량은 350자에서 400자 사이로 맞춰주세요. 이 글자 수 제한을 반드시 지켜야 합니다.
+- 응답에 '**'와 같은 마크다운 특수기호는 절대 사용하지 마세요.
+- 마지막 문장은 반드시 마침표(.)로 끝나도록 자연스럽게 마무리해주세요.
 """
             response = model.generate_content(llm_prompt)
             recommendation_text = response.text.strip()
+
+            # 후처리 로직 강화 (안전장치)
+            # 1. 특수기호 제거
+            recommendation_text = recommendation_text.replace("**", "")
+
+            # 2. 길이 초과 시 문장 단위로 자르기
+            if len(recommendation_text) > 450:
+                # 450자 이내에서 마지막 마침표를 찾음
+                last_period_index = recommendation_text.rfind('.', 0, 450)
+                if last_period_index != -1:
+                    # 마침표를 포함하여 문장을 자름
+                    recommendation_text = recommendation_text[:last_period_index + 1]
+                else:
+                    # 마침표가 없다면, 450자에서 그냥 자르고 '...' 추가
+                    recommendation_text = recommendation_text[:450] + "..."
+
         except Exception as e:
             logger.warning(f"LLM 추천 메시지 실패: {e}")
             recommendation_text = (

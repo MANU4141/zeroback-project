@@ -4,6 +4,7 @@ import json
 from flask import request, jsonify, current_app, send_file
 from flasgger import swag_from
 from datetime import datetime
+from werkzeug.utils import secure_filename
 
 from app.schemas import (
     recommend_schema,
@@ -205,36 +206,24 @@ def register_routes(app):
                     converted_recommendation_result['images']
                 )
 
+            # 최종 응답 구조화 (중복 최소화)
             response = {
                 "success": True,
                 "weather": weather_info or {},
-                "recommendation_text": converted_recommendation_result.get(
-                    "recommendation_text", "추천을 생성했습니다."
-                ),
-                # 구 호환: 기대하는 키들 포함
-                "suggested_items": converted_recommendation_result.get("suggested_items", []),
-                "ai_analysis": ai_attributes,
-                "ai_debug_details": ai_debug_details,
-                "recommendation_details": converted_recommendation_result,
-                # 신 버전 키도 유지
+                "styling_tip": converted_recommendation_result.get("recommendation_text", "스타일링 팁을 생성하지 못했습니다."),
                 "recommended_images": converted_recommendation_result.get("images", []),
-                "total_pages": converted_recommendation_result.get("total_pages", 0),
-                "current_page": converted_recommendation_result.get("page", 1),
+                "suggested_items": converted_recommendation_result.get("suggested_items", []),
+                "pagination": {
+                    "current_page": converted_recommendation_result.get("page", 1),
+                    "total_pages": converted_recommendation_result.get("total_pages", 0),
+                },
+                # 디버깅 및 상세 정보는 별도 객체로 그룹화 (중복 데이터 제거)
+                "debug_info": {
+                    "ai_analysis": ai_attributes,
+                    "ai_debug_details": ai_debug_details,
+                    "weather_fallback_used": used_fallback_weather,
+                }
             }
-            if used_fallback_weather:
-                response["weather_fallback"] = True
-            if ai_attributes is None:
-                response["ai_analysis_status"] = (
-                    "AI 분석 결과 없음 (상세: ai_debug_details 참조)"
-                )
-            else:
-                # 일부 클라이언트는 최상위에 속성 키가 있기를 기대함
-                current_app.logger.info("AI 분석 결과를 최상위 키로 복사")
-                for k in ("color", "style", "category", "material", "detail"):
-                    if k in ai_attributes:
-                        response[k] = ai_attributes.get(k)
-                        current_app.logger.info(f"키 {k} 복사됨: {response[k]}")
-
             current_app.logger.info("응답 생성 완료")
             return jsonify(response), 200
         except Exception as e:
@@ -323,6 +312,7 @@ def register_routes(app):
                         "longitude": lon,
                         "weather_info": weather_info,
                         "used_fallback": used_fallback,
+                        "used_fallback": used_fallback,
                     }
                 ),
                 200,
@@ -338,34 +328,31 @@ def register_routes(app):
         try:
             image_dir = current_app.config.get("IMAGE_DIR")
             if not image_dir:
+                current_app.logger.error("IMAGE_DIR is not configured.")
                 return jsonify({"error": "Image directory not configured"}), 500
-            
-            # 경로 트래버설 공격 방지
-            if ".." in filename or "/" in filename.replace("/", ""):
+
+            # 1. 파일명을 안전하게 정제 (경로 문자 제거)
+            safe_filename = secure_filename(filename)
+            if not safe_filename:
                 return jsonify({"error": "Invalid filename"}), 400
-            
-            # 실제 파일 경로 구성
-            safe_path = os.path.join(image_dir, filename)
-            safe_path = os.path.abspath(safe_path)
-            
-            # 이미지 디렉토리 내부인지 확인 (보안)
-            if not safe_path.startswith(os.path.abspath(image_dir)):
+
+            # 2. 절대 경로 생성 및 검증
+            image_dir_abs = os.path.abspath(image_dir)
+            file_path_abs = os.path.abspath(os.path.join(image_dir_abs, safe_filename))
+
+            # 최종 경로가 이미지 디렉토리 내부에 있는지 확인 (가장 중요한 보안)
+            if not file_path_abs.startswith(image_dir_abs):
+                current_app.logger.warning(f"Path traversal attempt denied: {filename}")
                 return jsonify({"error": "Access denied"}), 403
             
             # 파일 존재 여부 확인
-            if not os.path.exists(safe_path):
+            if not os.path.exists(file_path_abs):
                 return jsonify({"error": "Image not found"}), 404
             
-            # 이미지 파일 형식 확인
-            allowed_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
-            file_ext = os.path.splitext(safe_path)[1].lower()
-            if file_ext not in allowed_extensions:
-                return jsonify({"error": "Invalid file type"}), 400
-            
             # 파일 서빙
-            return send_file(safe_path, as_attachment=False)
+            return send_file(file_path_abs, as_attachment=False)
         except Exception as e:
-            current_app.logger.error(f"이미지 서빙 실패: {e}", exc_info=True)
+            current_app.logger.error(f"이미지 서빙 실패: {filename}, 오류: {e}", exc_info=True)
             return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/api/makeswagger", methods=["GET"])

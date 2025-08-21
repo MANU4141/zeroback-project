@@ -26,22 +26,27 @@ export default function ResultPage() {
   const { state } = useLocation();
 
   // API 베이스 (환경변수 > 로컬 기본)
-  const API_BASE = (process.env.REACT_APP_API_URL || "http://127.0.0.1:5000").replace(/\/$/, "");
+  const API_BASE = "http://35.208.20.233:5000";
 
   // 문자열/객체/파일명을 화면 표시용 절대 URL로 변환
   const toImageUrl = (item) => {
     if (!item) return "";
+
+    let p = "";
     if (typeof item === "string") {
-      if (/^https?:\/\//i.test(item)) return item;        // 절대 URL
-      return `${API_BASE}/api/images/${item}`;            // 파일명 → /api/images/{파일명}
+      p = item;
+    } else if (typeof item === "object") {
+      p = item.img_path || item.path || item.filename || item.file || item.url || "";
     }
-    if (typeof item === "object") {
-      const p = item.img_path || item.path || item.filename || item.file || item.url || "";
-      if (!p) return "";
-      if (/^https?:\/\//i.test(p)) return p;
-      return `${API_BASE}/api/images/${p}`;
-    }
-    return "";
+
+    if (!p) return "";
+    if (/^https?:\/\//i.test(p)) return p; // 이미 절대 URL이면 그대로 반환
+
+    // 경로 문자(슬래시, 역슬래시)를 기준으로 가장 마지막 부분을 파일명으로 간주
+    const filename = p.split(/[\\/]/).pop();
+    if (!filename) return ""; // 파일명이 없으면 빈 문자열 반환
+
+    return `${API_BASE}/api/images/${filename}`;
   };
   const normalizeImages = (arr) => (Array.isArray(arr) ? arr.map(toImageUrl).filter(Boolean) : []);
 
