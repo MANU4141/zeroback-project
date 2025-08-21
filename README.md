@@ -49,6 +49,15 @@ OOTD-AI 백엔드는 AI 기반 패션 추천 시스템의 핵심 API 서버입�
 
 ### 1. 환경 설정
 ```bash
+# 가상환경 생성
+python -m venv venv
+
+# 가상환경 활성화 (Windows)
+venv\Scripts\activate
+
+# 가상환경 활성화 (Linux/Mac)
+source venv/bin/activate
+
 # 의존성 설치
 pip install -r requirements.txt
 ```
@@ -185,7 +194,7 @@ backend_gemini/
 │   └── labels/           # 라벨 데이터
 ├── models/
 │   ├── YOLOv11_large.pt  # YOLO 모델
-│   └── ResNet50.pth   # ResNet 모델
+│   └── ResNet50.pth      # ResNet 모델
 ├── config.py             # 설정 파일
 ├── run.py                # 서버 실행 진입점
 ├── requirements.txt      # Python 의존성
@@ -248,14 +257,6 @@ class Config:
 ```bash
 docker build -t ootd-backend .
 ```
-### Docker Compose 사용
-'''bash
-# 개발 환경
-docker-compose -f docker-compose.dev.yml up
-
-# 프로덕션 환경
-docker-compose up
-'''
 
 ### Docker 컨테이너 실행
 `.env` 파일의 내용을 환경변수로 전달하여 실행합니다.
@@ -264,6 +265,15 @@ docker run -p 5000:5000 \
   -e WEATHER_API_KEY_DECODE=your_key \
   -e GEMINI_API_KEY=your_key \
   ootd-backend
+```
+
+### Docker Compose 사용
+```bash
+# 개발 환경
+docker-compose -f docker-compose.dev.yml up
+
+# 프로덕션 환경
+docker-compose up
 ```
 
 ## 🧪 테스트
