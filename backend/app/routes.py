@@ -1,4 +1,3 @@
-# backend/app/routes.py
 import os
 import json
 from flask import request, jsonify, current_app, send_file
@@ -84,6 +83,7 @@ def register_routes(app):
 
         page = int(data.get("page", 1))
         per_page = int(data.get("per_page", 3))
+        current_app.logger.info(f"Requested page: {page}, per_page: {per_page}")
 
         # 2. AI 모델 분석 (이미지가 있는 경우)
         ai_attributes, ai_debug_details = None, []
@@ -136,7 +136,8 @@ def register_routes(app):
             data["latitude"], data["longitude"]
         )
 
-        # 4. 최종 추천 생성 (절대로 500 에러가 나지 않도록 완전 안전 처리)
+        # 4. 최종 추천 생성 (recommendation_result 안전 초기화)
+        recommendation_result = None
         db_images = current_app.config.get("DB_IMAGES", [])
         current_app.logger.info(f"DB 이미지 개수: {len(db_images)}")
 
@@ -154,27 +155,26 @@ def register_routes(app):
             current_app.logger.info("final_recommendation 성공")
         except Exception as e:
             current_app.logger.exception(f"final_recommendation 호출 실패: {e}")
-            # 완전한 폴백 응답 생성
+            # 완전한 폴백 응답 생성 (total_pages DB 기반으로 제대로 계산)
             temp = weather_info.get("temperature", 20)
             fallback_images = db_images[:per_page] if db_images else []
-            
-            # 폴백 응답의 이미지 경로도 파일명으로 변환
+
             converted_fallback_images = []
             for img in fallback_images:
-                if isinstance(img, dict) and 'img_path' in img:
-                    filename = os.path.basename(img['img_path'])
+                if isinstance(img, dict) and "img_path" in img:
+                    filename = os.path.basename(img["img_path"])
                     img_copy = img.copy()
-                    img_copy['img_path'] = filename
+                    img_copy["img_path"] = filename
                     converted_fallback_images.append(img_copy)
                 else:
                     converted_fallback_images.append(img)
-            
+
             recommendation_result = {
                 "recommendation_text": f"오늘 {temp}°C {weather_info.get('condition', '맑음')} 날씨에는 편안한 스타일을 추천합니다.",
                 "images": converted_fallback_images,
                 "total_pages": (
                     (len(db_images) + per_page - 1) // per_page if db_images else 0
-                ),
+                ),  # DB 기반 계산 보장
                 "page": 1,
                 "suggested_items": style_preferences or ["캐주얼", "편안한"],
             }
@@ -186,14 +186,14 @@ def register_routes(app):
                 """이미지 리스트의 img_path를 파일명만으로 변환"""
                 if not images_list:
                     return images_list
-                
+
                 converted_images = []
                 for img in images_list:
-                    if isinstance(img, dict) and 'img_path' in img:
+                    if isinstance(img, dict) and "img_path" in img:
                         # 전체 경로에서 파일명만 추출
-                        filename = os.path.basename(img['img_path'])
+                        filename = os.path.basename(img["img_path"])
                         img_copy = img.copy()
-                        img_copy['img_path'] = filename
+                        img_copy["img_path"] = filename
                         converted_images.append(img_copy)
                     else:
                         converted_images.append(img)
@@ -201,28 +201,32 @@ def register_routes(app):
 
             # recommendation_result의 이미지 경로들을 파일명으로 변환
             converted_recommendation_result = recommendation_result.copy()
-            if 'images' in converted_recommendation_result:
-                converted_recommendation_result['images'] = convert_image_paths_to_filenames(
-                    converted_recommendation_result['images']
+            if "images" in converted_recommendation_result:
+                converted_recommendation_result["images"] = (
+                    convert_image_paths_to_filenames(
+                        converted_recommendation_result["images"]
+                    )
                 )
 
-            # 최종 응답 구조화 (중복 최소화)
+            # 최종 응답 구조화 (중복 최소화, flat 키 사용)
             response = {
                 "success": True,
                 "weather": weather_info or {},
-                "styling_tip": converted_recommendation_result.get("recommendation_text", "스타일링 팁을 생성하지 못했습니다."),
+                "styling_tip": converted_recommendation_result.get(
+                    "recommendation_text", "스타일링 팁을 생성하지 못했습니다."
+                ),
                 "recommended_images": converted_recommendation_result.get("images", []),
-                "suggested_items": converted_recommendation_result.get("suggested_items", []),
-                "pagination": {
-                    "current_page": converted_recommendation_result.get("page", 1),
-                    "total_pages": converted_recommendation_result.get("total_pages", 0),
-                },
+                "suggested_items": converted_recommendation_result.get(
+                    "suggested_items", []
+                ),
+                "current_page": converted_recommendation_result.get("page", 1),
+                "total_pages": converted_recommendation_result.get("total_pages", 0),
                 # 디버깅 및 상세 정보는 별도 객체로 그룹화 (중복 데이터 제거)
                 "debug_info": {
                     "ai_analysis": ai_attributes,
                     "ai_debug_details": ai_debug_details,
                     "weather_fallback_used": used_fallback_weather,
-                }
+                },
             }
             current_app.logger.info("응답 생성 완료")
             return jsonify(response), 200
@@ -311,8 +315,7 @@ def register_routes(app):
                         "latitude": lat,
                         "longitude": lon,
                         "weather_info": weather_info,
-                        "used_fallback": used_fallback,
-                        "used_fallback": used_fallback,
+                        "used_fallback": used_fallback,  # 중복 제거
                     }
                 ),
                 200,
@@ -344,15 +347,17 @@ def register_routes(app):
             if not file_path_abs.startswith(image_dir_abs):
                 current_app.logger.warning(f"Path traversal attempt denied: {filename}")
                 return jsonify({"error": "Access denied"}), 403
-            
+
             # 파일 존재 여부 확인
             if not os.path.exists(file_path_abs):
                 return jsonify({"error": "Image not found"}), 404
-            
+
             # 파일 서빙
             return send_file(file_path_abs, as_attachment=False)
         except Exception as e:
-            current_app.logger.error(f"이미지 서빙 실패: {filename}, 오류: {e}", exc_info=True)
+            current_app.logger.error(
+                f"이미지 서빙 실패: {filename}, 오류: {e}", exc_info=True
+            )
             return jsonify({"error": "Internal server error"}), 500
 
     @app.route("/api/makeswagger", methods=["GET"])

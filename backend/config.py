@@ -17,7 +17,7 @@ class Config:
     # --- 모델 경로 ---
     MODEL_PATHS = {
         "yolo": os.path.join(BASE_DIR, "models", "YOLOv11_large.pt"),
-        "resnet": os.path.join(BASE_DIR, "models", "ResNet50_45.pth"),
+        "resnet": os.path.join(BASE_DIR, "models", "ResNet50.pth"),
     }
 
     # --- 데이터셋 경로 ---

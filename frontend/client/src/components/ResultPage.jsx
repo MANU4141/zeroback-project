@@ -1,4 +1,3 @@
-// src/components/ResultPage.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -15,20 +14,14 @@ import {
   FaLightbulb,
 } from "react-icons/fa";
 
-/**
- * ResultPage
- * - location, weather, recommended_images, styling_tip 은 반드시 백엔드/이전 페이지에서 전달된 값 사용
- * - recommended_images: "파일명"/"객체"/"절대URL" 모두 수용 → 화면용 절대URL로 변환
- * - 다시 받기: requestPayload(폼에서 넘긴 FormData/JSON)로 /api/recommend 재요청
- */
 export default function ResultPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  // API 베이스 (환경변수 > 로컬 기본)
-  const API_BASE = "http://35.208.20.233:5000";
+  // API 베이스 (환경변수 사용, 기본값은 /api)
+  const API_BASE = process.env.REACT_APP_API_BASE || "/api";
 
-  // 문자열/객체/파일명을 화면 표시용 절대 URL로 변환
+  // 이미지 URL 변환 함수
   const toImageUrl = (item) => {
     if (!item) return "";
 
@@ -40,22 +33,31 @@ export default function ResultPage() {
     }
 
     if (!p) return "";
-    if (/^https?:\/\//i.test(p)) return p; // 이미 절대 URL이면 그대로 반환
+    if (/^https?:\/\//i.test(p)) return p;
 
-    // 경로 문자(슬래시, 역슬래시)를 기준으로 가장 마지막 부분을 파일명으로 간주
     const filename = p.split(/[\\/]/).pop();
-    if (!filename) return ""; // 파일명이 없으면 빈 문자열 반환
+    if (!filename) return "";
 
     return `${API_BASE}/api/images/${filename}`;
   };
   const normalizeImages = (arr) => (Array.isArray(arr) ? arr.map(toImageUrl).filter(Boolean) : []);
 
-  // 재요청 payload (없으면 홈으로)
-  const requestPayload = state?.requestPayload ?? null;
+  // 재요청 payload 상태화 (업데이트 persist)
+  const [requestPayload, setRequestPayload] = useState(state?.requestPayload ?? null);
+
+  // 페이지네이션 상태
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // state에서 페이지 정보 초기화 (비동기 반영 보장)
+  useEffect(() => {
+    setCurrentPage(state?.current_page ?? 1);
+    setTotalPages(state?.total_pages ?? 1);
+  }, [state]);
 
   const [data, setData] = useState(() => ({
     location: state?.location ?? state?.requestPayload?.location ?? "",
-    weather: state?.weather ?? {}, // {description, temp, humidity, wind}
+    weather: state?.weather ?? {},
     recommended_images: normalizeImages(state?.recommended_images ?? []),
     styling_tip: state?.styling_tip ?? "",
   }));
@@ -89,32 +91,43 @@ export default function ResultPage() {
     return <FaSun />;
   };
 
-  // 다시 받기
+  // 다시 받기 (다음 페이지) – 디버깅 로그 추가, 비활성화 로직 강화
   const [loading, setLoading] = useState(false);
   const onRetry = async () => {
-    if (!requestPayload) return navigate("/");
+    if (!requestPayload || totalPages <= 1) {
+      console.log("No more pages: totalPages =", totalPages);
+      return;
+    }
 
     try {
       setLoading(true);
+      const nextPage = currentPage + 1 > totalPages ? 1 : currentPage + 1;
+      const updatedPayload = { ...requestPayload, page: nextPage };
+      setRequestPayload(updatedPayload);
+      console.log("Requesting page:", nextPage, "Current totalPages:", totalPages);
 
-      // 재요청 시에도 FormData 사용 (이미지는 없음)
       const formData = new FormData();
-      formData.append("data", JSON.stringify(requestPayload));
+      formData.append("data", JSON.stringify(updatedPayload));
 
       const res = await axios.post(`${API_BASE}/api/recommend`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       const r = res.data || {};
+      console.log("Response total_pages:", r.total_pages);  // 디버깅: 응답 값 확인
+
       setData({
         location: r.location ?? location,
         weather: r.weather ?? weather,
         recommended_images: normalizeImages(r.recommended_images ?? []),
         styling_tip: r.styling_tip ?? "",
       });
+      setCurrentPage(r.current_page ?? nextPage);
+      setTotalPages(r.total_pages ?? 1);  // 응답에서 업데이트 보장
       setIndex(0);
     } catch (e) {
       console.error(e);
-      alert("다시 받기 요청 중 오류가 발생했어요.");
+      alert("오류 발생");
+      setCurrentPage(currentPage);  // 롤백
     } finally {
       setLoading(false);
     }
@@ -129,11 +142,12 @@ export default function ResultPage() {
         {/* 헤더 */}
         <div className="result-head">
           <h1 className="result-title">OOTD-AI</h1>
-          <button className="retry-link" onClick={onRetry} disabled={loading}>
-            {loading ? "요청 중..." : "다시 받기"}
+          <button className="retry-link" onClick={onRetry} disabled={loading || totalPages <= 1}>
+            {loading ? "요청 중..." : (totalPages <= 1 ? "더 이상 없음" : "다음 페이지")}
           </button>
         </div>
-
+        {/* 페이지 표시 */}
+        <div style={{ marginBottom: 8, fontWeight: 500 }}>페이지: {currentPage} / {totalPages}</div>
         {/* 위치 */}
         <div className="result-sub">
           <div className="pin">
